@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Григорий Полещук](https://up.htmlacademy.ru/react/8/user/1448543).
-* Наставник: `Неизвестно`.
+* Наставник: [Виктор Кан](https://htmlacademy.ru/profile/viktorkan).
 
 ---
 
