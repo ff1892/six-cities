@@ -1,6 +1,6 @@
 import Header from '../../layout/header/header';
 
-function Login(): JSX.Element {
+function SignIn(): JSX.Element {
   return (
     <div className="page page--gray page--login">
       <Header isHeaderNavigation={ false } />
@@ -34,4 +34,4 @@ function Login(): JSX.Element {
   );
 }
 
-export default Login;
+export default SignIn;

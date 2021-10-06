@@ -1,6 +1,6 @@
 import Header from '../../layout/header/header';
 
-function Property(): JSX.Element {
+function Room(): JSX.Element {
   return (
     <div className="page">
       <Header isHeaderNavigation />
@@ -333,4 +333,4 @@ function Property(): JSX.Element {
   );
 }
 
-export default Property;
+export default Room;
