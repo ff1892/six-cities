@@ -6,7 +6,7 @@ import MainEmptyScreen from '../screens/main-empty/main-empty';
 import SignInScreen from '../screens/sign-in/sign-in';
 import FavoritesScreen from '../screens/favorites/favorites';
 import FavoritesEmptyScreen from '../screens/favorites-empty/favorites-empty';
-import RoomScreen from '../screens/room/room';
+import OfferScreen from '../screens/offer/offer';
 import NotFoundScreen from '../screens/not-found/not-found';
 
 type AppProps = {
@@ -36,8 +36,8 @@ function App({cardCount}: AppProps): JSX.Element {
         <Route exact path={AppRoute.FavoritesEmpty}>
           <FavoritesEmptyScreen />
         </Route>
-        <Route exact path={AppRoute.Room}>
-          <RoomScreen />
+        <Route exact path={AppRoute.Offer}>
+          <OfferScreen />
         </Route>
         <Route>
           <NotFoundScreen />
