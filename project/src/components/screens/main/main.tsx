@@ -1,5 +1,5 @@
 import Header from '../../layout/header/header';
-import CardsList from '../../layout/cards-list/cards-list';
+import CardsListMain from '../../layout/cards-list-main/cards-list-main';
 import { Offer } from '../../../types/offer';
 
 
@@ -71,7 +71,7 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <CardsList offers={offers} />
+                <CardsListMain offers={offers} />
               </div>
             </section>
             <div className="cities__right-section">

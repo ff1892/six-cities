@@ -4,7 +4,7 @@ type CardProps = {
   offer: Offer,
 }
 
-function Card({offer}: CardProps): JSX.Element {
+function CardMain({offer}: CardProps): JSX.Element {
   const {
     isPremium,
     title,
@@ -67,4 +67,4 @@ function Card({offer}: CardProps): JSX.Element {
   );
 }
 
-export default Card;
+export default CardMain;
