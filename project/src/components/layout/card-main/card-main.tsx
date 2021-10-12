@@ -1,11 +1,15 @@
+import { Link } from 'react-router-dom';
 import { Offer } from '../../../types/offer';
+import { AppRoute } from '../../../const';
 
 type CardProps = {
   offer: Offer,
 }
 
 function CardMain({offer}: CardProps): JSX.Element {
+
   const {
+    id,
     isPremium,
     title,
     previewImage,
@@ -59,7 +63,9 @@ function CardMain({offer}: CardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{title}</a>
+          <Link to={`${AppRoute.Offer}${id}`}>
+            {title}
+          </Link>
         </h2>
         <p className="place-card__type">{`${type[0].toUpperCase()}${type.slice(1)}`}</p>
       </div>

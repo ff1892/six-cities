@@ -37,7 +37,7 @@ function App({offers}: AppProps): JSX.Element {
         <Route exact path={AppRoute.FavoritesEmpty}>
           <FavoritesEmptyScreen />
         </Route>
-        <Route exact path={AppRoute.Offer}>
+        <Route exact path={AppRoute.Offers}>
           <OfferScreen />
         </Route>
         <Route>

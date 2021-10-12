@@ -1,8 +1,8 @@
 import { Offer } from '../types/offer';
 
-const OFFERS_TO_SHOW = 4;
+// const OFFERS_TO_SHOW = 4;
 
-const offer: Offer = {
+const offer1: Offer = {
   id: 1,
   bedrooms: 3,
   city: {
@@ -23,7 +23,7 @@ const offer: Offer = {
   },
   images: ['img/1.png', 'img/2.png'],
   isFavorite: true,
-  isPremium: true,
+  isPremium: false,
   location: {
     latitude: 52.35514938496378,
     longitude: 4.673877537499948,
@@ -37,4 +37,9 @@ const offer: Offer = {
   type: 'apartment',
 };
 
-export const offers: Offer[] = new Array(OFFERS_TO_SHOW).fill(null).map((value, index) => Object.assign({}, offer, {id: index + 1}));
+const offer2 = Object.assign({}, offer1, { id: 2, isPremium: true, previewImage: 'img/apartment-01.jpg'} );
+const offer3 = Object.assign({}, offer1, { id: 3, city: { name: 'Cologne' }, previewImage: 'img/apartment-02.jpg'});
+const offer4 = Object.assign({}, offer1, { id: 4, rating: 3.4, isFavorite: false, previewImage: 'img/apartment-03.jpg'});
+
+export const offers: Offer[] = [offer1, offer2, offer3, offer4];
+// export const offers: Offer[] = new Array(OFFERS_TO_SHOW).fill(null).map((value, index) => Object.assign({}, offer, {id: index + 1}));

@@ -8,7 +8,8 @@ type FavoriteScreenProps = {
 }
 
 function Favorites({ offers}: FavoriteScreenProps): JSX.Element {
-  const availableCities: string[] = [... new Set(offers.map((offer) => offer.city.name))];
+  const availableCities: string[] = [...new Set(offers.map((offer) => offer.city.name))];
+  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
 
   return (
     <div className="page">
@@ -19,7 +20,16 @@ function Favorites({ offers}: FavoriteScreenProps): JSX.Element {
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
               {
-                availableCities.map((currentCity) => <CardListFavorite offers={offers.filter((offer) => offer.city.name === currentCity)} key={currentCity} city={currentCity}/>)
+                availableCities.map((currentCity) =>
+                  (
+                    <CardListFavorite
+                      offers={favoriteOffers.filter((offer) =>
+                        offer.city.name === currentCity)}
+                      key={currentCity}
+                      city={currentCity}
+                    />
+                  ),
+                )
               }
             </ul>
           </section>
