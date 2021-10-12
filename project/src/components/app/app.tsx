@@ -8,17 +8,18 @@ import FavoritesScreen from '../screens/favorites/favorites';
 import FavoritesEmptyScreen from '../screens/favorites-empty/favorites-empty';
 import OfferScreen from '../screens/offer/offer';
 import NotFoundScreen from '../screens/not-found/not-found';
+import { Offer } from '../../types/offer';
 
 type AppProps = {
-  cardCount: number;
+  offers: Offer[],
 }
 
-function App({cardCount}: AppProps): JSX.Element {
+function App({offers}: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <MainScreen cardCount={cardCount} />
+          <MainScreen offers={offers} />
         </Route>
         <Route exact path={AppRoute.MainEmpty}>
           <MainEmptyScreen />

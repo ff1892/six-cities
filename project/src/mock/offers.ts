@@ -22,7 +22,7 @@ const offer: Offer = {
     name: 'Angelina',
   },
   images: ['img/1.png', 'img/2.png'],
-  isFavorite: false,
+  isFavorite: true,
   isPremium: true,
   location: {
     latitude: 52.35514938496378,
@@ -30,7 +30,7 @@ const offer: Offer = {
     zoom: 8,
   },
   maxAdults: 4,
-  previewImage: 'img/1.png',
+  previewImage: 'img/room.jpg',
   price: 120,
   rating: 4.8,
   title: 'Beautiful & luxurious studio at great location',
