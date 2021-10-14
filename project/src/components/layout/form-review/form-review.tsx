@@ -1,9 +1,5 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, Fragment, ChangeEvent } from 'react';
 import { MAX_RATING, RatingNames } from '../../../const';
-
-type StarsScaleProps = {
-  rate: number;
-}
 
 function FormReview(): JSX.Element {
 
@@ -13,54 +9,42 @@ function FormReview(): JSX.Element {
   });
 
   const {rating,text} = review;
-  const ratingArray: number[] = new Array(MAX_RATING).fill(null).map((value, index) => index);
+  const ratingArray: number[] = new Array(MAX_RATING).fill(null).map((value, index) => index + 1);
 
-  function StarsScale({rate}: StarsScaleProps): JSX.Element {
-
-    const ratingChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-      e.preventDefault();
-      setReview({
-        ...review,
-        rating: parseInt(e.target.value, 10),
-      });
-    };
-
-    return (
-      <>
-        <input className="form__rating-input visually-hidden"
-          name="rating"
-          value={rate}
-          id={rate === 1 ? `${rate}-star` : `${rate}-stars`}
-          type="radio"
-          onChange={(e) => ratingChangeHandler(e)}
-        />
-        <label
-          htmlFor={rate === 1 ? `${rate}-star` : `${rate}-stars`}
-          className="reviews__rating-label form__rating-label"
-          title={RatingNames[rate]}
-        >
-          <svg className="form__star-image" width="37" height="33"
-            style = {{
-              fill: rate > rating ? '#c7c7c7' : '#ff9000',
-            }}
-          >
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
-      </>
-    );
-  }
+  const ratingChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setReview({
+      ...review,
+      rating: parseInt(e.target.value, 10),
+    });
+  };
 
   return (
     <form className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {
-          ratingArray.map((value, index) =>
-            (
-              <StarsScale rate={ratingArray.length - index} key={value} />
-            ),
-          )
+          ratingArray.map((value) => (
+            <Fragment key={value}>
+              <input className="form__rating-input visually-hidden"
+                name="rating"
+                value={value}
+                id={value === 1 ? `${value}-star` : `${value}-stars`}
+                type="radio"
+                checked={value === rating}
+                onChange={(e) => ratingChangeHandler(e)}
+              />
+              <label
+                htmlFor={value === 1 ? `${value}-star` : `${value}-stars`}
+                className="reviews__rating-label form__rating-label"
+                title={RatingNames[value]}
+              >
+                <svg className="form__star-image" width="37" height="33">
+                  <use xlinkHref="#icon-star"></use>
+                </svg>
+              </label>
+            </Fragment>
+          ))
         }
       </div>
       <textarea
