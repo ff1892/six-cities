@@ -27,8 +27,8 @@ function CardsListMain({offers}: CardsListMainProps): JSX.Element {
             <CardMain
               key={offerValue.id}
               offer={offerValue}
-              onMouseEnter={(e) => handleMouseEnterEvent(e, offerValue.id)}
-              onMouseLeave={(e) => handleMouseLeaveEvent(e)}
+              onMouseEnter={handleMouseEnterEvent}
+              onMouseLeave={handleMouseLeaveEvent}
             />
           ),
         )

@@ -23,7 +23,11 @@ function CardMain({offer, onMouseEnter, onMouseLeave}: CardProps): JSX.Element {
   } = offer;
 
   return (
-    <article className="cities__place-card place-card">
+    <article
+      className="cities__place-card place-card"
+      onMouseEnter={(e) => onMouseEnter(e, id)}
+      onMouseLeave={(e) => onMouseLeave(e)}
+    >
       {
         isPremium &&
           <div className="place-card__mark">

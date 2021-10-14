@@ -16,10 +16,10 @@ export enum AuthorizationStatus {
 
 export const MAX_RATING = 5;
 
-export enum RatingNames {
-  rate1 = 'terribly',
-  rate2 = 'badly',
-  rate3 = 'not bad',
-  rate4 = 'good',
-  rate5 = 'perfect',
-}
+export const RatingNames: { [key: number]: string } = {
+  1: 'terribly',
+  2: 'badly',
+  3: 'not bad',
+  4: 'good',
+  5: 'perfect',
+};

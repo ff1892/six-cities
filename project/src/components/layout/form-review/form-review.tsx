@@ -16,6 +16,15 @@ function FormReview(): JSX.Element {
   const ratingArray: number[] = new Array(MAX_RATING).fill(null).map((value, index) => index);
 
   function StarsScale({rate}: StarsScaleProps): JSX.Element {
+
+    const ratingChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      setReview({
+        ...review,
+        rating: parseInt(e.target.value, 10),
+      });
+    };
+
     return (
       <>
         <input className="form__rating-input visually-hidden"
@@ -23,18 +32,12 @@ function FormReview(): JSX.Element {
           value={rate}
           id={rate === 1 ? `${rate}-star` : `${rate}-stars`}
           type="radio"
-          onChange={({ target }: ChangeEvent<HTMLInputElement>) => {
-            const value = parseInt(target.value, 10);
-            setReview({
-              ...review,
-              rating: value,
-            });
-          }}
+          onChange={(e) => ratingChangeHandler(e)}
         />
         <label
           htmlFor={rate === 1 ? `${rate}-star` : `${rate}-stars`}
           className="reviews__rating-label form__rating-label"
-          title={RatingNames.rate1}
+          title={RatingNames[rate]}
         >
           <svg className="form__star-image" width="37" height="33">
             <use xlinkHref="#icon-star"></use>
