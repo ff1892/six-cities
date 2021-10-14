@@ -12,7 +12,7 @@ function FormReview(): JSX.Element {
     text: '',
   });
 
-  const {text} = review;
+  const {rating,text} = review;
   const ratingArray: number[] = new Array(MAX_RATING).fill(null).map((value, index) => index);
 
   function StarsScale({rate}: StarsScaleProps): JSX.Element {
@@ -39,7 +39,11 @@ function FormReview(): JSX.Element {
           className="reviews__rating-label form__rating-label"
           title={RatingNames[rate]}
         >
-          <svg className="form__star-image" width="37" height="33">
+          <svg className="form__star-image" width="37" height="33"
+            style = {{
+              fill: rate > rating ? '#c7c7c7' : '#ff9000',
+            }}
+          >
             <use xlinkHref="#icon-star"></use>
           </svg>
         </label>
