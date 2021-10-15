@@ -1,11 +1,13 @@
 import Header from '../../layout/header/header';
-import Card from '../../layout/card/card';
+import CardsListMain from '../../layout/cards-list-main/cards-list-main';
+import { Offer } from '../../../types/offer';
+
 
 type MainScreenProps = {
-  cardCount: number;
+  offers: Offer[],
 }
 
-function MainScreen({cardCount}: MainScreenProps): JSX.Element {
+function MainScreen({offers}: MainScreenProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Header isHeaderNavigation />
@@ -68,12 +70,7 @@ function MainScreen({cardCount}: MainScreenProps): JSX.Element {
                   <li className="places__option" tabIndex="0">Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                {
-                  new Array(cardCount).fill(null)
-                    .map(() => <Card key={Math.random()} />)
-                }
-              </div>
+              <CardsListMain offers={offers} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>

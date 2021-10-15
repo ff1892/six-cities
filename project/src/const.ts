@@ -4,7 +4,8 @@ export enum AppRoute {
   SignIn = '/login',
   Favorites = '/favorites',
   FavoritesEmpty = '/favorites-empty',
-  Room = '/offer/:id',
+  Offers = '/offer/:id',
+  Offer = '/offer/',
 }
 
 export enum AuthorizationStatus {
@@ -12,3 +13,13 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+
+export const MAX_RATING = 5;
+
+export const RatingNames: { [key: number]: string } = {
+  1: 'terribly',
+  2: 'badly',
+  3: 'not bad',
+  4: 'good',
+  5: 'perfect',
+};
