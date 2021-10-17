@@ -25,8 +25,8 @@ const offer1: Offer = {
   isFavorite: true,
   isPremium: false,
   location: {
-    latitude: 52.35514938496378,
-    longitude: 4.673877537499948,
+    latitude: 52.3909553943508,
+    longitude: 4.85309666406198,
     zoom: 8,
   },
   maxAdults: 4,
@@ -37,9 +37,59 @@ const offer1: Offer = {
   type: 'apartment',
 };
 
-const offer2 = Object.assign({}, offer1, { id: 2, isPremium: true, previewImage: 'img/apartment-01.jpg'} );
-const offer3 = Object.assign({}, offer1, { id: 3, city: { name: 'Cologne' }, previewImage: 'img/apartment-02.jpg'});
-const offer4 = Object.assign({}, offer1, { id: 4, rating: 3.4, isFavorite: false, previewImage: 'img/apartment-03.jpg'});
+const offer2 = Object.assign(
+  {},
+  offer1,
+  {
+    id: 2,
+    city: {
+      location: {
+        latitude: 52.369553943508,
+        longitude: 4.85309666406198,
+        zoom: 10,
+      },
+      name: 'Amsterdam',
+    },
+    isPremium: true,
+    previewImage: 'img/apartment-01.jpg',
+  },
+);
+
+const offer3 = Object.assign(
+  {},
+  offer1,
+  {
+    id: 3,
+    city: {
+      location: {
+        latitude: 52.3909553943508,
+        longitude: 4.929309666406198,
+        zoom: 10,
+      },
+      name: 'Amsterdam',
+    },
+    previewImage: 'img/apartment-02.jpg',
+  },
+);
+
+const offer4 = Object.assign(
+  {},
+  offer1,
+  {
+    id: 4,
+    city: {
+      location: {
+        latitude: 52.3809553943508,
+        longitude: 4.939309666406198,
+        zoom: 10,
+      },
+      name: 'Amsterdam',
+    },
+    rating: 3.4,
+    previewImage: 'img/apartment-03.jpg',
+    isFavorite: false,
+  },
+);
 
 export const offers: Offer[] = [offer1, offer2, offer3, offer4];
 // export const offers: Offer[] = new Array(OFFERS_TO_SHOW).fill(null).map((value, index) => Object.assign({}, offer, {id: index + 1}));
