@@ -1,22 +1,23 @@
-import { useState, MouseEvent} from 'react';
+import { MouseEvent } from 'react';
 import CardMain from '../card-main/card-main';
 import { Offer } from '../../../types/offer';
 
 type CardsListMainProps = {
   offers: Offer[],
+  onHoverOffer: (id: number | null) => void;
 }
 
-function CardsListMain({offers}: CardsListMainProps): JSX.Element {
-  const [isHovered, setIsHovered] = useState(0);
+function CardsListMain({offers, onHoverOffer}: CardsListMainProps): JSX.Element {
+
 
   const handleMouseEnterEvent = (e: MouseEvent<HTMLElement>, id: number) => {
     e.preventDefault();
-    setIsHovered(isHovered * 0 + id);
+    onHoverOffer(id);
   };
 
   const handleMouseLeaveEvent = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    setIsHovered(0);
+    onHoverOffer(null);
   };
 
   return (
