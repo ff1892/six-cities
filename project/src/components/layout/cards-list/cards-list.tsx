@@ -1,13 +1,15 @@
 import { MouseEvent } from 'react';
-import CardMain from '../card-main/card-main';
+import CardMain from '../card/card';
 import { Offer } from '../../../types/offer';
+import { Cards } from '../../../types/cards';
 
-type CardsListMainProps = {
+type CardsListProps = {
   offers: Offer[],
   onHoverOffer: (id: number | null) => void;
+  classes: Cards,
 }
 
-function CardsListMain({offers, onHoverOffer}: CardsListMainProps): JSX.Element {
+function CardsList({offers, onHoverOffer, classes}: CardsListProps): JSX.Element {
 
 
   const handleMouseEnterEvent = (e: MouseEvent<HTMLElement>, id: number) => {
@@ -21,13 +23,15 @@ function CardsListMain({offers, onHoverOffer}: CardsListMainProps): JSX.Element 
   };
 
   return (
-    <div className="cities__places-list places__list tabs__content">
+    <div className={classes.listClass}>
       {
         offers.map((offerValue) =>
           (
             <CardMain
               key={offerValue.id}
               offer={offerValue}
+              articleClass={classes.articleClass}
+              wrapperClass={classes.wrapperClass}
               onMouseEnter={handleMouseEnterEvent}
               onMouseLeave={handleMouseLeaveEvent}
             />
@@ -38,4 +42,4 @@ function CardsListMain({offers, onHoverOffer}: CardsListMainProps): JSX.Element 
   );
 }
 
-export default CardsListMain;
+export default CardsList;

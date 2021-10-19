@@ -1,10 +1,9 @@
 import { CommentGet } from '../../../../types/comment';
+import { getStarsRatingStyle } from '../../../../util';
 
 type ReviewProps = {
   review: CommentGet;
 }
-
-const RATING_RER_STAR = 20;
 
 function Review({review}: ReviewProps): JSX.Element {
   const {comment, date, rating, user} = review;
@@ -33,7 +32,7 @@ function Review({review}: ReviewProps): JSX.Element {
           <div className="reviews__stars rating__stars">
             <span
               style={{
-                width: `${rating * RATING_RER_STAR}%`,
+                width: `${getStarsRatingStyle(rating)}`,
               }}
             />
             <span className="visually-hidden">Rating</span>
