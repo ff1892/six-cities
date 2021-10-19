@@ -1,5 +1,5 @@
 import { useState, Fragment, ChangeEvent } from 'react';
-import { MAX_RATING, RatingNames } from '../../../const';
+import { MAX_RATING, RatingNames } from '../../../../const';
 
 function FormReview(): JSX.Element {
 
