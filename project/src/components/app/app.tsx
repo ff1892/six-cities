@@ -6,7 +6,7 @@ import MainEmptyScreen from '../screens/main-empty/main-empty';
 import SignInScreen from '../screens/sign-in/sign-in';
 import FavoritesScreen from '../screens/favorites/favorites';
 import FavoritesEmptyScreen from '../screens/favorites-empty/favorites-empty';
-import OfferScreen from '../screens/offer/offer';
+import PropertyScreen from '../screens/offer/offer';
 import NotFoundScreen from '../screens/not-found/not-found';
 import { Offer } from '../../types/offer';
 
@@ -38,7 +38,7 @@ function App({offers}: AppProps): JSX.Element {
           <FavoritesEmptyScreen />
         </Route>
         <Route exact path={AppRoute.Offers}>
-          <OfferScreen />
+          <PropertyScreen offers={offers}/>
         </Route>
         <Route>
           <NotFoundScreen />

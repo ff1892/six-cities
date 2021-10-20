@@ -1,9 +1,15 @@
 import { useState } from 'react';
 import Header from '../../layout/header/header';
-import CardsListMain from '../../layout/cards-list-main/cards-list-main';
+import CardsList from '../../layout/cards-list/cards-list';
 import Map from '../../layout/map/map';
 import { Offer } from '../../../types/offer';
 import CitiesList from '../../layout/cities-list/cities-list';
+
+const CardClasses = {
+  listClass: 'cities__places-list places__list tabs__content',
+  articleClass: 'cities__place-card',
+  wrapperClass: 'cities__image-wrapper',
+};
 
 
 type MainScreenProps = {
@@ -49,7 +55,7 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
                   <li className="places__option" tabIndex="0">Top rated first</li>
                 </ul>
               </form>
-              <CardsListMain offers={offers} onHoverOffer={onHoverOffer}/>
+              <CardsList offers={offers} onHoverOffer={onHoverOffer} classes={CardClasses}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">

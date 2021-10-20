@@ -5,11 +5,13 @@ import { AppRoute } from '../../../const';
 
 type CardProps = {
   offer: Offer,
+  articleClass: string,
+  wrapperClass: string,
   onMouseEnter: (e: MouseEvent<HTMLElement>, id: number) => void,
   onMouseLeave: (e: MouseEvent<HTMLElement>) => void,
 }
 
-function CardMain({offer, onMouseEnter, onMouseLeave}: CardProps): JSX.Element {
+function CardMain({ offer, articleClass, wrapperClass, onMouseEnter, onMouseLeave}: CardProps): JSX.Element {
 
   const {
     id,
@@ -24,9 +26,9 @@ function CardMain({offer, onMouseEnter, onMouseLeave}: CardProps): JSX.Element {
 
   return (
     <article
-      className="cities__place-card place-card"
-      onMouseEnter={(e) => onMouseEnter(e, id)}
-      onMouseLeave={(e) => onMouseLeave(e)}
+      className={`${articleClass} place-card`}
+      onMouseEnter={(evt) => onMouseEnter(evt, id)}
+      onMouseLeave={(evt) => onMouseLeave(evt)}
     >
       {
         isPremium &&
@@ -34,7 +36,7 @@ function CardMain({offer, onMouseEnter, onMouseLeave}: CardProps): JSX.Element {
             <span>Premium</span>
           </div>
       }
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${wrapperClass} place-card__image-wrapper`}>
         <a href="/">
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
         </a>

@@ -1,6 +1,6 @@
 import Header from '../../layout/header/header';
 import { Offer } from '../../../types/offer';
-import CardListFavorite from '../../layout/card-list-favorite/cardlist-favorite';
+import CardListFavorite from './card-list-favorite/cardlist-favorite';
 import Footer from '../../layout/footer/footer';
 
 type FavoriteScreenProps = {

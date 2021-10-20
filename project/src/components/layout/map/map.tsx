@@ -51,7 +51,10 @@ function Map(props: MapProps): JSX.Element {
 
   return (
     <div
-      style={{height: '100%'}}
+      style={{
+        height: '100%',
+        width: '100%',
+      }}
       ref={mapRef}
     >
     </div>
