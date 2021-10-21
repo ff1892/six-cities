@@ -38,3 +38,12 @@ export const CITIES = [
 ];
 
 export const DEFAULT_CITY = 'Amsterdam';
+
+export const DEFAULT_SORTING = 'Popular';
+
+export const SortingTypes = [
+  'Popular',
+  'Price: low to high',
+  'Price: high to low',
+  'Top rated first',
+];

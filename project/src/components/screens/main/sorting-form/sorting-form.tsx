@@ -1,14 +1,21 @@
 import { useState } from 'react';
+import { SortingTypes } from '../../../../const';
 
-const sortingTypes = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'];
+type SortingFormProps = {
+  currentSorting: string,
+  onSortingChange: (sortingType: string) => void,
+};
 
-function SortingForm(): JSX.Element {
+function SortingForm({currentSorting, onSortingChange}: SortingFormProps ): JSX.Element {
   const [isActive, setIsActive] = useState(false);
 
-  // setIsActive((prevState) => prevState = !prevState);
-
-  const handleFormHeaderClick = () => {
+  const handleFormHeaderClick = (): void => {
     setIsActive((prevState) => !prevState);
+  };
+
+  const handleFormItemClick = (sortingType: string) : void => {
+    setIsActive((prevState) => !prevState);
+    onSortingChange(sortingType);
   };
 
   return(
@@ -19,27 +26,24 @@ function SortingForm(): JSX.Element {
         tabIndex="0"
         onClick={() => handleFormHeaderClick()}
       >
-        Popular
+        {currentSorting}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      <ul
-        className={`places__options places__options--custom ${isActive ? 'places__options--opened' : ''}`}
-        onClick={() => handleFormHeaderClick()}
-      >
+      <ul className={`places__options places__options--custom ${isActive ? 'places__options--opened' : ''}`}>
         {
-          sortingTypes.map((value) => (
+          SortingTypes.map((value) => (
             <li
               key={value}
-              className="places__option"
+              className={`places__option ${currentSorting === value ? 'places__option--active' : ''}`}
               tabIndex="0"
+              onClick={(evt) => handleFormItemClick(value)}
             >
               {value}
             </li>
           ))
         }
-        {/* <li className="places__option places__option--active" tabIndex="0">Popular</li> */}
       </ul>
     </form>
   );

@@ -18,3 +18,16 @@ export const getAttributedDate = (currentDate: string): string => (
 export const filterOffersByCity = (offers: Offer[], city: string): Offer[] => (
   offers.filter((offer) => offer.city.name === city)
 );
+
+export const sortOffers = (sortingType: string, offers: Offer[]): Offer[] => {
+  switch (sortingType) {
+    case ('Price: low to high'):
+      return [...offers].sort((a, b) => a.price - b.price);
+    case ('Price: high to low'):
+      return [...offers].sort((a, b) => b.price - a.price);
+    case ('Top rated first'):
+      return [...offers].sort((a, b) => b.rating - a.rating);
+    default:
+      return offers;
+  }
+};

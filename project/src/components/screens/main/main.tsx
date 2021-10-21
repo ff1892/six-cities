@@ -8,8 +8,8 @@ import Map from '../../layout/map/map';
 import NoOffersMain from './no-offers-main/no-offers-main';
 import {State} from '../../../types/state';
 import {Actions} from '../../../types/action';
-import {changeCity} from '../../../store/action';
-import { filterOffersByCity } from '../../../util';
+import {changeCity, changeSorting} from '../../../store/action';
+import { filterOffersByCity, sortOffers } from '../../../util';
 
 const CardClasses = {
   listClass: 'cities__places-list places__list tabs__content',
@@ -17,14 +17,18 @@ const CardClasses = {
   wrapperClass: 'cities__image-wrapper',
 };
 
-const mapStateToProps = ({selectedCity, offers}: State) => ({
+const mapStateToProps = ({selectedCity, offers, currentSorting}: State) => ({
   selectedCity,
   offers,
+  currentSorting,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
   onCityClick(selectedCity: string) {
     dispatch(changeCity(selectedCity));
+  },
+  onSortingChange(currentSorting: string) {
+    dispatch(changeSorting(currentSorting));
   },
 });
 
@@ -33,7 +37,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function MainScreen({ offers, selectedCity, onCityClick }: PropsFromRedux): JSX.Element {
+function MainScreen({ offers, selectedCity, onCityClick, currentSorting, onSortingChange }: PropsFromRedux): JSX.Element {
 
   const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
 
@@ -42,6 +46,7 @@ function MainScreen({ offers, selectedCity, onCityClick }: PropsFromRedux): JSX.
   };
 
   const filteredOffers = filterOffersByCity(offers, selectedCity);
+  const sortedOffers = sortOffers(currentSorting, filteredOffers);
   const offersCount = filteredOffers.length;
   const hasOffers = !!filteredOffers.length;
 
@@ -59,8 +64,8 @@ function MainScreen({ offers, selectedCity, onCityClick }: PropsFromRedux): JSX.
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">{offersCount} {offersCount === 1 ? 'place': 'places'} to stay in {selectedCity}</b>
-                <SortingForm />
-                <CardsList offers={filteredOffers} onOfferHover={onOfferHover} classes={CardClasses}/>
+                <SortingForm currentSorting={currentSorting} onSortingChange={onSortingChange}/>
+                <CardsList offers={sortedOffers} onOfferHover={onOfferHover} classes={CardClasses}/>
               </section>
               <div className="cities__right-section">
                 <section className="cities__map map">
