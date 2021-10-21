@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import {useState, Dispatch} from 'react';
+import {connect, ConnectedProps} from 'react-redux';
 import Header from '../../layout/header/header';
 import CardsList from '../../layout/cards-list/cards-list';
 import Map from '../../layout/map/map';
-import { Offer } from '../../../types/offer';
-import CitiesList from '../../layout/cities-list/cities-list';
+import {Offer} from '../../../types/offer';
+import CitiesList from './cities-list/cities-list';
+import {State} from '../../../types/state';
+import {Actions} from '../../../types/action';
+import {changeCity} from '../../../store/action';
 
 const CardClasses = {
   listClass: 'cities__places-list places__list tabs__content',
@@ -11,12 +15,27 @@ const CardClasses = {
   wrapperClass: 'cities__image-wrapper',
 };
 
+const mapStateToProps = ({selectedCity}: State) => ({
+  selectedCity,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
+  onCityClick(selectedCity: string) {
+    dispatch(changeCity(selectedCity));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type MainScreenProps = {
   offers: Offer[],
+  selectedCity: string,
 }
 
-function MainScreen({offers}: MainScreenProps): JSX.Element {
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux & MainScreenProps;
+
+function MainScreen({offers, selectedCity, onCityClick}: ConnectedComponentProps): JSX.Element {
 
   const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
 
@@ -32,7 +51,7 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <CitiesList />
+            <CitiesList selectedCity={selectedCity} onCityClick={onCityClick} />
           </section>
         </div>
         <div className="cities">
@@ -69,4 +88,5 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
   );
 }
 
-export default MainScreen;
+export {MainScreen};
+export default connector(MainScreen);

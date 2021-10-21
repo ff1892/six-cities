@@ -19,7 +19,7 @@ function App({offers}: AppProps): JSX.Element {
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <MainScreen offers={offers} />
+          <MainScreen offers={offers}/>
         </Route>
         <Route exact path={AppRoute.MainEmpty}>
           <MainEmptyScreen />

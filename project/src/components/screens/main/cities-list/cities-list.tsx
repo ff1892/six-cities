@@ -1,10 +1,17 @@
-// import { useState } from 'react';
-import { CITIES } from '../../../const';
+import {MouseEvent} from 'react';
+import {CITIES} from '../../../../const';
 
-function CitiesList(): JSX.Element {
+type CitiesListProps = {
+  selectedCity: string,
+  onCityClick: (city: string) => void,
+};
 
-  // const [selectedCity, selectedCity] = useState('Amsterdam');
-  const selectedCity = 'Amsterdam';
+function CitiesList({selectedCity, onCityClick}: CitiesListProps): JSX.Element {
+
+  const handleCityClick = (evt: MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+    onCityClick(evt.currentTarget.innerText);
+  };
 
   return (
     <ul className="locations__list tabs__list">
@@ -14,6 +21,7 @@ function CitiesList(): JSX.Element {
             <a
               className={`locations__item-link tabs__item ${value === selectedCity ? 'tabs__item--active' : ''}`}
               href="/"
+              onClick={(evt) => handleCityClick(evt)}
             >
               <span>{value}</span>
             </a>

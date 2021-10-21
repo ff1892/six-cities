@@ -38,4 +38,4 @@ export const CITIES = [
   'Dusseldorf',
 ];
 
-
+export const DEFAULT_CITY = 'Amsterdam';

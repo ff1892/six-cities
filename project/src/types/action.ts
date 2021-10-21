@@ -8,4 +8,3 @@ export type ChangeCityAction = {
 };
 
 export type Actions = ChangeCityAction;
-
