@@ -1,14 +1,13 @@
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const';
-import PrivateRoute from '../private-route/private-route';
-import MainScreen from '../screens/main/main';
-import MainEmptyScreen from '../screens/main-empty/main-empty';
-import SignInScreen from '../screens/sign-in/sign-in';
-import FavoritesScreen from '../screens/favorites/favorites';
-import FavoritesEmptyScreen from '../screens/favorites-empty/favorites-empty';
-import PropertyScreen from '../screens/offer/offer';
-import NotFoundScreen from '../screens/not-found/not-found';
-import { Offer } from '../../types/offer';
+import { AppRoute, AuthorizationStatus } from '../const';
+import PrivateRoute from '../components/private-route/private-route';
+import MainScreen from '../components/screens/main/main';
+import SignInScreen from '../components/screens/sign-in/sign-in';
+import FavoritesScreen from '../components/screens/favorites/favorites';
+import FavoritesEmptyScreen from '../components/screens/favorites-empty/favorites-empty';
+import PropertyScreen from '../components/screens/property/property';
+import NotFoundScreen from '../components/screens/not-found/not-found';
+import { Offer } from '../types/offer';
 
 type AppProps = {
   offers: Offer[],
@@ -19,10 +18,7 @@ function App({offers}: AppProps): JSX.Element {
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <MainScreen offers={offers}/>
-        </Route>
-        <Route exact path={AppRoute.MainEmpty}>
-          <MainEmptyScreen />
+          <MainScreen />
         </Route>
         <Route exact path={AppRoute.SignIn}>
           <SignInScreen />

@@ -29,7 +29,7 @@ function Property ({offers}: OfferType): JSX.Element {
 
   const [selectedOffer, setSelectedOffer] = useState<number | null>(currentOffer.id);
 
-  const onHoverOffer = (id: number | null) => {
+  const onOfferHover = (id: number | null) => {
     setSelectedOffer(id);
   };
 
@@ -185,7 +185,7 @@ function Property ({offers}: OfferType): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <CardsList offers={offersNearby} onHoverOffer={onHoverOffer} classes={CardClasses} />
+            <CardsList offers={offersNearby} onOfferHover={onOfferHover} classes={CardClasses} />
           </section>
         </div>
       </main>
