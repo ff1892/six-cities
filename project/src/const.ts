@@ -1,6 +1,5 @@
 export enum AppRoute {
   Main = '/',
-  MainEmpty = '/main-empty',
   SignIn = '/login',
   Favorites = '/favorites',
   FavoritesEmpty = '/favorites-empty',
@@ -38,4 +37,13 @@ export const CITIES = [
   'Dusseldorf',
 ];
 
+export const DEFAULT_CITY = 'Amsterdam';
 
+export const DEFAULT_SORTING = 'Popular';
+
+export const SortingTypes = [
+  'Popular',
+  'Price: low to high',
+  'Price: high to low',
+  'Top rated first',
+];

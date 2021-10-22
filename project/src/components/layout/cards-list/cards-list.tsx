@@ -1,25 +1,25 @@
 import { MouseEvent } from 'react';
-import CardMain from '../card/card';
 import { Offer } from '../../../types/offer';
 import { Cards } from '../../../types/cards';
+import CardMain from '../card/card';
 
 type CardsListProps = {
   offers: Offer[],
-  onHoverOffer: (id: number | null) => void;
+  onOfferHover: (id: number | null) => void;
   classes: Cards,
 }
 
-function CardsList({offers, onHoverOffer, classes}: CardsListProps): JSX.Element {
+function CardsList({offers, onOfferHover, classes}: CardsListProps): JSX.Element {
 
 
   const handleMouseEnterEvent = (e: MouseEvent<HTMLElement>, id: number) => {
     e.preventDefault();
-    onHoverOffer(id);
+    onOfferHover(id);
   };
 
   const handleMouseLeaveEvent = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    onHoverOffer(null);
+    onOfferHover(null);
   };
 
   return (

@@ -1,5 +1,5 @@
 import { CommentGet } from '../../../../types/comment';
-import { getStarsRatingStyle } from '../../../../util';
+import { getStarsRatingStyle, getDisplayedDate, getAttributedDate } from '../../../../util';
 
 type ReviewProps = {
   review: CommentGet;
@@ -8,14 +8,6 @@ type ReviewProps = {
 function Review({review}: ReviewProps): JSX.Element {
   const {comment, date, rating, user} = review;
   const {avatarUrl, name} = user;
-
-  const getDisplayedDate = (currentDate: string): string => (
-    new Date(currentDate).toLocaleString('en-GB', { month: 'short', year: '2-digit' })
-  );
-
-  const getAttributedDate = (currentDate: string): string => (
-    new Date(currentDate).toLocaleString('en-CA')
-  );
 
   return (
     <li className="reviews__item">

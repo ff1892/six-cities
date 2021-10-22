@@ -58,6 +58,7 @@ const offer2 = Object.assign(
       name: 'Amsterdam',
     },
     isPremium: true,
+    price: 100,
     previewImage: 'img/apartment-01.jpg',
   },
 );
@@ -67,6 +68,8 @@ const offer3 = Object.assign(
   offer1,
   {
     id: 3,
+    price: 20,
+    rating: 3.1,
     city: {
       location: {
         latitude: 52.3909553943508,

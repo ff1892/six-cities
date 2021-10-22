@@ -1,9 +1,15 @@
-import { useState } from 'react';
+import {useState, Dispatch} from 'react';
+import {connect, ConnectedProps} from 'react-redux';
 import Header from '../../layout/header/header';
+import CitiesList from './cities-list/cities-list';
+import SortingForm from './sorting-form/sorting-form';
 import CardsList from '../../layout/cards-list/cards-list';
 import Map from '../../layout/map/map';
-import { Offer } from '../../../types/offer';
-import CitiesList from '../../layout/cities-list/cities-list';
+import NoOffersMain from './no-offers-main/no-offers-main';
+import {State} from '../../../types/state';
+import {Actions} from '../../../types/action';
+import {changeCity, changeSorting} from '../../../store/action';
+import { filterOffersByCity, sortOffers } from '../../../util';
 
 const CardClasses = {
   listClass: 'cities__places-list places__list tabs__content',
@@ -11,62 +17,71 @@ const CardClasses = {
   wrapperClass: 'cities__image-wrapper',
 };
 
+const mapStateToProps = ({selectedCity, offers, currentSorting}: State) => ({
+  selectedCity,
+  offers,
+  currentSorting,
+});
 
-type MainScreenProps = {
-  offers: Offer[],
-}
+const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
+  onCityClick(selectedCity: string) {
+    dispatch(changeCity(selectedCity));
+  },
+  onSortingChange(currentSorting: string) {
+    dispatch(changeSorting(currentSorting));
+  },
+});
 
-function MainScreen({offers}: MainScreenProps): JSX.Element {
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function MainScreen({ offers, selectedCity, onCityClick, currentSorting, onSortingChange }: PropsFromRedux): JSX.Element {
 
   const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
 
-  const onHoverOffer = (id: number | null) => {
+  const onOfferHover = (id: number | null) => {
     setSelectedOffer(id);
   };
+
+  const filteredOffers = filterOffersByCity(offers, selectedCity);
+  const sortedOffers = sortOffers(currentSorting, filteredOffers);
+  const offersCount = filteredOffers.length;
+  const hasOffers = !!filteredOffers.length;
 
   return (
     <div className="page page--gray page--main">
       <Header isHeaderNavigation />
 
-      <main className="page__main page__main--index">
+      <main className={`page__main page__main--index ${hasOffers ? '' : 'page__main--index-empty'}`}>
         <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">
-          <section className="locations container">
-            <CitiesList />
-          </section>
-        </div>
+        <CitiesList selectedCity={selectedCity} onCityClick={onCityClick} />
         <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex="0">
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex="0">Popular</li>
-                  <li className="places__option" tabIndex="0">Price: low to high</li>
-                  <li className="places__option" tabIndex="0">Price: high to low</li>
-                  <li className="places__option" tabIndex="0">Top rated first</li>
-                </ul>
-              </form>
-              <CardsList offers={offers} onHoverOffer={onHoverOffer} classes={CardClasses}/>
-            </section>
-            <div className="cities__right-section">
-              <section className="cities__map map">
-                <Map offers={offers} selectedOffer={selectedOffer}/>
+          {
+            hasOffers &&
+            <div className="cities__places-container container">
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2>
+                <b className="places__found">{offersCount} {offersCount === 1 ? 'place': 'places'} to stay in {selectedCity}</b>
+                <SortingForm currentSorting={currentSorting} onSortingChange={onSortingChange}/>
+                <CardsList offers={sortedOffers} onOfferHover={onOfferHover} classes={CardClasses}/>
               </section>
+              <div className="cities__right-section">
+                <section className="cities__map map">
+                  <Map offers={filteredOffers} selectedOffer={selectedOffer}/>
+                </section>
+              </div>
             </div>
-          </div>
+          }
+          {
+            !hasOffers && <NoOffersMain selectedCity={selectedCity} />
+          }
         </div>
       </main>
     </div>
   );
 }
 
-export default MainScreen;
+export {MainScreen};
+export default connector(MainScreen);
