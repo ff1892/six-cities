@@ -1,6 +1,20 @@
+import './style.css';
+
 function LoadingScreen(): JSX.Element {
   return (
-    <p>Loading</p>
+    <div className="loader">
+      <div className="lds-grid">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
   );
 }
 
