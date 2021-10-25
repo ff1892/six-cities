@@ -1,14 +1,14 @@
-import {useState, Dispatch} from 'react';
-import {connect, ConnectedProps} from 'react-redux';
+import { useState, Dispatch } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import Header from '../../layout/header/header';
 import CitiesList from './cities-list/cities-list';
 import SortingForm from './sorting-form/sorting-form';
 import CardsList from '../../layout/cards-list/cards-list';
 import Map from '../../layout/map/map';
 import NoOffersMain from './no-offers-main/no-offers-main';
-import {State} from '../../../types/state';
-import {Actions} from '../../../types/action';
-import {changeCity, changeSorting} from '../../../store/action';
+import { State } from '../../../types/state';
+import { Actions } from '../../../types/action';
+import { changeCity, changeSorting } from '../../../store/action';
 import { filterOffersByCity, sortOffers } from '../../../util';
 
 const CardClasses = {

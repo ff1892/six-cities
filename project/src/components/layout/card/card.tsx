@@ -73,7 +73,7 @@ function CardMain({ offer, articleClass, wrapperClass, onMouseEnter, onMouseLeav
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`${AppRoute.Offer}${id}`}>
+          <Link to={`${AppRoute.Offers}/${id}`}>
             {title}
           </Link>
         </h2>
