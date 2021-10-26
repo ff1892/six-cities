@@ -52,7 +52,7 @@ function MainScreen({ offers, selectedCity, onCityClick, currentSorting, onSorti
 
   return (
     <div className="page page--gray page--main">
-      <Header isHeaderNavigation />
+      <Header />
 
       <main className={`page__main page__main--index ${hasOffers ? '' : 'page__main--index-empty'}`}>
         <h1 className="visually-hidden">Cities</h1>

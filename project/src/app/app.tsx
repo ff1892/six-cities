@@ -1,6 +1,6 @@
 import { connect, ConnectedProps } from 'react-redux';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../const';
+import { AppRoute } from '../const';
 import { State } from '../types/state';
 import { isCheckedAuth } from '../util';
 import PrivateRoute from '../components/private-route/private-route';
@@ -42,10 +42,9 @@ function App({authorizationStatus, isDataLoaded, offers}: PropsFromRedux): JSX.E
           exact
           path={AppRoute.Favorites}
           render={() => <FavoritesScreen offers={offers} />}
-          authorizationStatus={AuthorizationStatus.Auth}
         >
         </PrivateRoute>
-        <Route exact path={AppRoute.Offers}>
+        <Route exact path={`${AppRoute.Offers}/:offerId`}>
           <PropertyScreen offers={offers}/>
         </Route>
         <Route>

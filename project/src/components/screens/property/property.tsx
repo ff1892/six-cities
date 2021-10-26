@@ -56,7 +56,7 @@ function Property ({offers}: OfferType): JSX.Element {
 
   return (
     <div className="page">
-      <Header isHeaderNavigation />
+      <Header />
 
       <main className="page__main page__main--property">
         <section className="property">

@@ -18,13 +18,16 @@ const reducer = (state: State = InitialState, action: Actions): State => {
       return {...state, currentSorting: action.payload};
     case ActionType.LoadOffers: {
       const {offers} = action.payload;
-      return {...state, offers};
+      return {
+        ...state,
+        offers,
+        isDataLoaded: true,
+      };
     }
     case ActionType.RequireAuthorization:
       return {
         ...state,
         authorizationStatus: action.payload,
-        isDataLoaded: true,
       };
     case ActionType.RequireLogout:
       return {...state, authorizationStatus: AuthorizationStatus.NoAuth};

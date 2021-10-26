@@ -1,4 +1,4 @@
-function HeaderNavigation(): JSX.Element {
+function NavigationAuth(): JSX.Element {
   return (
     <nav className="header__nav">
       <ul className="header__nav-list">
@@ -19,4 +19,4 @@ function HeaderNavigation(): JSX.Element {
   );
 }
 
-export default HeaderNavigation;
+export default NavigationAuth;
