@@ -1,13 +1,11 @@
 import { Link } from 'react-router-dom';
-import NavigationAuth from '../navigation-auth/navigation-auth';
-import NavigationNoAuth from '../navigation-no-auth/navigation-no-auth';
+import HeaderNavigation from '../header-navigation/header-navigation';
 
 type headerNavigationProps = {
   isHeaderNavigation?: boolean;
-  isAuth?: boolean;
 }
 
-function Header({ isHeaderNavigation = true, isAuth}: headerNavigationProps): JSX.Element {
+function Header({isHeaderNavigation = true}: headerNavigationProps): JSX.Element {
   return (
     <header className="header">
       <div className="container">
@@ -17,8 +15,7 @@ function Header({ isHeaderNavigation = true, isAuth}: headerNavigationProps): JS
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
             </Link>
           </div>
-          {isHeaderNavigation && isAuth ? <NavigationAuth /> : '' }
-          {isHeaderNavigation && !isAuth ? <NavigationNoAuth /> : '' }
+          {isHeaderNavigation ? <HeaderNavigation /> : '' }
         </div>
       </div>
     </header>

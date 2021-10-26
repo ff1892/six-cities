@@ -8,7 +8,7 @@ import Header from '../../layout/header/header';
 import { AppRoute } from '../../../const';
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onSubmit(authData: AuthData) {
+  onFormSubmit(authData: AuthData) {
     dispatch(loginAction(authData));
   },
 });
@@ -18,7 +18,7 @@ const connector = connect(null, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function SignIn(props: PropsFromRedux): JSX.Element {
-  const {onSubmit} = props;
+  const {onFormSubmit} = props;
 
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
@@ -29,7 +29,7 @@ function SignIn(props: PropsFromRedux): JSX.Element {
     evt.preventDefault();
 
     if (loginRef.current !== null && passwordRef.current !== null) {
-      onSubmit({
+      onFormSubmit({
         login: loginRef.current.value,
         password: passwordRef.current.value,
       });
