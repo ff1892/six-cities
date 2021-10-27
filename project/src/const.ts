@@ -2,9 +2,15 @@ export enum AppRoute {
   Main = '/',
   SignIn = '/login',
   Favorites = '/favorites',
-  FavoritesEmpty = '/favorites-empty',
-  Offers = '/offer/:offerId',
-  Offer = '/offer/',
+  Offers = '/offer',
+}
+
+export enum APIRoute {
+  Offers = '/hotels',
+  Nearby = '/nearby',
+  Favorites = '/favorites',
+  Login = '/login',
+  Logout = '/logout',
 }
 
 export enum AuthorizationStatus {
@@ -37,7 +43,7 @@ export const CITIES = [
   'Dusseldorf',
 ];
 
-export const DEFAULT_CITY = 'Amsterdam';
+export const DEFAULT_CITY = 'Paris';
 
 export const DEFAULT_SORTING = 'Popular';
 

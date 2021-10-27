@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 import HeaderNavigation from '../header-navigation/header-navigation';
 
 type headerNavigationProps = {
-  isHeaderNavigation: boolean;
+  isHeaderNavigation?: boolean;
 }
 
-function Header({ isHeaderNavigation }: headerNavigationProps): JSX.Element {
+function Header({isHeaderNavigation = true}: headerNavigationProps): JSX.Element {
   return (
     <header className="header">
       <div className="container">
@@ -15,7 +15,7 @@ function Header({ isHeaderNavigation }: headerNavigationProps): JSX.Element {
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
             </Link>
           </div>
-          { isHeaderNavigation ? <HeaderNavigation /> : '' }
+          {isHeaderNavigation ? <HeaderNavigation /> : '' }
         </div>
       </div>
     </header>

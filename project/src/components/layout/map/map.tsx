@@ -1,15 +1,9 @@
-import { Icon, Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useRef, useEffect } from 'react';
-import { Offer } from '../../../types/offer';
+import { useEffect, useRef } from 'react';
 import useMap from '../../../hooks/useMap';
 import { MarkerUrl } from '../../../const';
-
-
-type MapProps = {
-  offers: Offer[];
-  selectedOffer: number | null;
-};
+import leaflet, { LayerGroup, Icon, Marker } from 'leaflet';
+import { Offer } from '../../../types/offer';
 
 const defaultIcon = new Icon({
   iconUrl: MarkerUrl.Default,
@@ -23,41 +17,70 @@ const activeIcon = new Icon({
   iconAnchor: [15, 40],
 });
 
-function Map(props: MapProps): JSX.Element {
-  const {offers, selectedOffer} = props;
-  const city = offers[0].city;
+type MapProps = {
+  selectedOffer: number | null,
+  offers: Offer[],
+};
 
+function Map(props: MapProps): JSX.Element {
+  const { offers, selectedOffer } = props;
+
+  const markersRef = useRef<LayerGroup>(new leaflet.LayerGroup());
   const mapRef = useRef(null);
+
+  const city = offers[0].city;
   const map = useMap(mapRef, city);
 
   useEffect(() => {
-    if (map) {
-      offers.forEach((offer) => {
-        const marker = new Marker({
-          lat: offer.city.location.latitude,
-          lng: offer.city.location.longitude,
-        });
-
-        marker
-          .setIcon(
-            selectedOffer !== null && offer.id === selectedOffer
-              ? activeIcon
-              : defaultIcon,
-          )
-          .addTo(map);
-      });
+    if (!map) {
+      return;
     }
-  }, [map, offers, selectedOffer]);
+
+    markersRef.current.clearLayers();
+
+    const {
+      location: {
+        latitude,
+        longitude,
+        zoom },
+    } = city;
+
+    map.flyTo([latitude, longitude], zoom);
+
+    offers.forEach((offer) => {
+      const marker = new Marker({
+        lat: offer.location.latitude,
+        lng: offer.location.longitude,
+      });
+
+      const isHovered = selectedOffer && offer.id === selectedOffer;
+
+      marker.setIcon(
+        isHovered
+          ? activeIcon
+          : defaultIcon)
+        .addTo(markersRef.current);
+
+      isHovered && map.flyTo(
+        [
+          offer.location.latitude,
+          offer.location.longitude,
+        ],
+        offer.location.zoom);
+    });
+
+    markersRef.current.addTo(map);
+  },
+
+  [selectedOffer, city, map, offers]);
 
   return (
     <div
       style={{
         height: '100%',
-        width: '100%',
       }}
       ref={mapRef}
-    >
-    </div>
+    />
   );
 }
 

@@ -37,9 +37,9 @@ function CardMain({ offer, articleClass, wrapperClass, onMouseEnter, onMouseLeav
           </div>
       }
       <div className={`${wrapperClass} place-card__image-wrapper`}>
-        <a href="/">
+        <Link to={`${AppRoute.Offers}/${id}`}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -73,7 +73,7 @@ function CardMain({ offer, articleClass, wrapperClass, onMouseEnter, onMouseLeav
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`${AppRoute.Offer}${id}`}>
+          <Link to={`${AppRoute.Offers}/${id}`}>
             {title}
           </Link>
         </h2>

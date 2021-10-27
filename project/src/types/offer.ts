@@ -35,3 +35,21 @@ export type Offer = {
   type: string,
 };
 
+export type OfferResponse = Omit<Offer,
+ | 'host'
+ | 'isFavorite'
+ | 'isPremium'
+ | 'maxAdults'
+ | 'previewImage'
+ > & {
+    host: {
+     'avatar_url': string,
+     'id': number,
+     'is_pro': boolean,
+     'name': string,
+   },
+   'is_favorite': boolean,
+   'is_premium': boolean,
+   'max_adults': number,
+   'preview_image': string,
+ };
