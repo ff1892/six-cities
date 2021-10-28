@@ -1,4 +1,4 @@
-import { useState, Dispatch } from 'react';
+import { useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import Header from '../../layout/header/header';
 import CitiesList from './cities-list/cities-list';
@@ -7,9 +7,11 @@ import CardsList from '../../layout/cards-list/cards-list';
 import Map from '../../layout/map/map';
 import NoOffersMain from './no-offers-main/no-offers-main';
 import { State } from '../../../types/state';
-import { Actions } from '../../../types/action';
 import { changeCity, changeSorting } from '../../../store/action';
 import { filterOffersByCity, sortOffers } from '../../../util';
+import { ThunkAppDispatch } from '../../../types/action';
+import { fetchOffersAction } from '../../../store/api-actions';
+import LoadWrapper from '../../layout/loader-wrapper/loader-wrapper';
 
 const CardClasses = {
   listClass: 'cities__places-list places__list tabs__content',
@@ -17,27 +19,46 @@ const CardClasses = {
   wrapperClass: 'cities__image-wrapper',
 };
 
-const mapStateToProps = ({selectedCity, offers, currentSorting}: State) => ({
+const mapStateToProps = ({
   selectedCity,
   offers,
   currentSorting,
+  isOffersLoaded,
+}: State) => ({
+  selectedCity,
+  offers,
+  currentSorting,
+  isOffersLoaded,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onCityClick(selectedCity: string) {
     dispatch(changeCity(selectedCity));
   },
   onSortingChange(currentSorting: string) {
     dispatch(changeSorting(currentSorting));
   },
+  fetchOffers() {
+    dispatch(fetchOffersAction());
+  },
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-
-
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function MainScreen({ offers, selectedCity, onCityClick, currentSorting, onSortingChange }: PropsFromRedux): JSX.Element {
+function MainScreen({
+  offers,
+  selectedCity,
+  currentSorting,
+  isOffersLoaded,
+  onCityClick,
+  onSortingChange,
+  fetchOffers,
+}: PropsFromRedux): JSX.Element {
+
+  useEffect(() => {
+    fetchOffers();
+  }, [fetchOffers]);
 
   const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
 
@@ -51,15 +72,16 @@ function MainScreen({ offers, selectedCity, onCityClick, currentSorting, onSorti
   const hasOffers = !!filteredOffers.length;
 
   return (
-    <div className="page page--gray page--main">
-      <Header />
+    <LoadWrapper isLoad={isOffersLoaded}>
+      <div className="page page--gray page--main">
+        <Header />
 
-      <main className={`page__main page__main--index ${hasOffers ? '' : 'page__main--index-empty'}`}>
-        <h1 className="visually-hidden">Cities</h1>
-        <CitiesList selectedCity={selectedCity} onCityClick={onCityClick} />
-        <div className="cities">
-          {
-            hasOffers &&
+        <main className={`page__main page__main--index ${hasOffers ? '' : 'page__main--index-empty'}`}>
+          <h1 className="visually-hidden">Cities</h1>
+          <CitiesList selectedCity={selectedCity} onCityClick={onCityClick} />
+          <div className="cities">
+            {
+              hasOffers &&
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
@@ -73,13 +95,14 @@ function MainScreen({ offers, selectedCity, onCityClick, currentSorting, onSorti
                 </section>
               </div>
             </div>
-          }
-          {
-            !hasOffers && <NoOffersMain selectedCity={selectedCity} />
-          }
-        </div>
-      </main>
-    </div>
+            }
+            {
+              !hasOffers && <NoOffersMain selectedCity={selectedCity} />
+            }
+          </div>
+        </main>
+      </div>
+    </LoadWrapper>
   );
 }
 

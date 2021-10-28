@@ -6,6 +6,10 @@ import {
   changeCity,
   changeSorting,
   loadOffers,
+  loadCurrentOffer,
+  loadCurrentOfferError,
+  loadCurrentOfferComments,
+  loadNearbyOffers,
   requireAuthorization,
   requireLogout
 } from '../store/action';
@@ -14,6 +18,10 @@ export enum ActionType {
   ChangeCity = 'main/changeCity',
   ChangeSorting = 'main/ChangeSorting',
   LoadOffers = 'data/LoadOffers',
+  LoadCurrentOffer = 'data/LoadCurrentOffer',
+  LoadCurrentOfferError = 'data/LoadCurrentOfferError',
+  LoadCurrentOfferComments = 'data/LoadCurrentOfferComments',
+  LoadNearbyOffers = 'data/LoadNearbyOffers',
   RequireAuthorization = 'user/requireAuthorization',
   RequireLogout = 'user/requireLogout',
 }
@@ -22,6 +30,10 @@ export type Actions =
   | ReturnType<typeof changeCity>
   | ReturnType<typeof changeSorting>
   | ReturnType<typeof loadOffers>
+  | ReturnType<typeof loadCurrentOffer>
+  | ReturnType<typeof loadCurrentOfferError>
+  | ReturnType<typeof loadCurrentOfferComments>
+  | ReturnType<typeof loadNearbyOffers>
   | ReturnType<typeof requireAuthorization>
   | ReturnType<typeof requireLogout>;
 

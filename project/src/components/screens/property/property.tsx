@@ -1,17 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../../layout/header/header';
 import FormReview from './form-review/form-review';
 import ReviewsList from './reviews-list/reviews-list';
 import CardsList from '../../layout/cards-list/cards-list';
 import Map from '../../layout/map/map';
-import { comments } from '../../../mock/comments';
-import { Offer } from '../../../types/offer';
 import { useParams } from 'react-router';
 import { getStarsRatingStyle } from '../../../util';
+import { State } from '../../../types/state';
+import { ThunkAppDispatch } from '../../../types/action';
+import { connect, ConnectedProps } from 'react-redux';
+import Loader from '../../layout/loader/loader';
+import LoadWrapper from '../../layout/loader-wrapper/loader-wrapper';
+import NotFound from '../not-found/not-found';
+import { AuthorizationStatus } from '../../../const';
 
-type OfferType = {
-  offers: Offer[];
-};
+import {
+  fetchCurrentOfferAction,
+  fetchNearbyOffersAction,
+  fetchCurrentOfferCommentsAction
+} from '../../../store/api-actions';
 
 const MAX_IMAGES_GALLERY = 6;
 
@@ -21,17 +28,77 @@ const CardClasses = {
   wrapperClass: 'near-places__image-wrapper',
 };
 
-function Property ({offers}: OfferType): JSX.Element {
+const mapStateToProps = ({
+  currentOffer,
+  isCurrentOfferLoaded,
+  nearbyOffers,
+  isCurrentOfferError,
+  currentOfferComments,
+  isCommentsLoaded,
+  isNearbyOffersLoaded,
+  authorizationStatus,
+}: State) => ({
+  currentOffer,
+  isCurrentOfferLoaded,
+  isCurrentOfferError,
+  currentOfferComments,
+  isCommentsLoaded,
+  nearbyOffers,
+  isNearbyOffersLoaded,
+  authorizationStatus,
+});
+
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  fetchCurrentOffer(id: string) {
+    dispatch(fetchCurrentOfferAction(id));
+  },
+  fetchNearbyOffers(id: string) {
+    dispatch(fetchNearbyOffersAction(id));
+  },
+  fetchCurrentOfferComments(id: string) {
+    dispatch(fetchCurrentOfferCommentsAction(id));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function Property({
+  currentOffer,
+  isCurrentOfferLoaded,
+  isCurrentOfferError,
+  currentOfferComments,
+  isCommentsLoaded,
+  nearbyOffers,
+  isNearbyOffersLoaded,
+  authorizationStatus,
+  fetchCurrentOffer,
+  fetchNearbyOffers,
+  fetchCurrentOfferComments,
+}: PropsFromRedux): JSX.Element {
+
+  const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
 
   const { offerId } = useParams<{ offerId: string }>();
-  const currentOffer = offers.find((offer) => offerId === offer.id.toString()) as Offer;
-  const offersNearby = offers.filter((offer) => currentOffer.id !== offer.id);
+  const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
 
-  const [selectedOffer, setSelectedOffer] = useState<number | null>(currentOffer.id);
+  useEffect(() => {
+    fetchCurrentOffer(offerId);
+    fetchNearbyOffers(offerId);
+    fetchCurrentOfferComments(offerId);
+  }, [fetchCurrentOffer, fetchNearbyOffers, fetchCurrentOfferComments, offerId]);
 
   const onOfferHover = (id: number | null) => {
     setSelectedOffer(id);
   };
+
+  if (isCurrentOfferError) {
+    return <NotFound />;
+  }
+
+  if (!currentOffer || !isCurrentOfferLoaded) {
+    return <Loader />;
+  }
 
   const {
     images,
@@ -57,7 +124,6 @@ function Property ({offers}: OfferType): JSX.Element {
   return (
     <div className="page">
       <Header />
-
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">
@@ -167,30 +233,37 @@ function Property ({offers}: OfferType): JSX.Element {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <ReviewsList reviews={comments}/>
-                <FormReview />
+                <LoadWrapper isLoad={isCommentsLoaded}>
+                  <ReviewsList reviews={currentOfferComments}/>
+                </LoadWrapper>
+                {isAuthorized && <FormReview />}
               </section>
             </div>
           </div>
-          <section className="property__map map"
-            style={{
-              maxWidth: '1200px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-            }}
-          >
-            <Map offers={offersNearby} selectedOffer={selectedOffer}/>
-          </section>
+          <LoadWrapper isLoad={isNearbyOffersLoaded}>
+            <section className="property__map map"
+              style={{
+                maxWidth: '1200px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+            >
+              <Map offers={nearbyOffers} selectedOffer={selectedOffer}/>
+            </section>
+          </LoadWrapper>
         </section>
-        <div className="container">
-          <section className="near-places places">
-            <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <CardsList offers={offersNearby} onOfferHover={onOfferHover} classes={CardClasses} />
-          </section>
-        </div>
+        <LoadWrapper isLoad={isNearbyOffersLoaded}>
+          <div className="container">
+            <section className="near-places places">
+              <h2 className="near-places__title">Other places in the neighbourhood</h2>
+              <CardsList offers={nearbyOffers} onOfferHover={onOfferHover} classes={CardClasses} />
+            </section>
+          </div>
+        </LoadWrapper>
       </main>
     </div>
   );
 }
 
-export default Property;
+export {Property};
+export default connector(Property);

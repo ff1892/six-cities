@@ -1,6 +1,6 @@
 import './style.css';
 
-function LoadingScreen(): JSX.Element {
+function Loader(): JSX.Element {
   return (
     <div className="loader">
       <div className="lds-grid">
@@ -18,4 +18,4 @@ function LoadingScreen(): JSX.Element {
   );
 }
 
-export default LoadingScreen;
+export default Loader;

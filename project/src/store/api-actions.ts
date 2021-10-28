@@ -1,9 +1,24 @@
-import { adaptOffersGroupToClient } from '../services/adapter';
+import {
+  adaptOfferToClient,
+  adaptOffersGroupToClient,
+  adaptCommentsGorupToClient
+} from '../services/adapter';
+
+import {
+  loadOffers,
+  loadCurrentOffer,
+  loadCurrentOfferError,
+  loadCurrentOfferComments,
+  loadNearbyOffers,
+  requireAuthorization,
+  requireLogout
+} from './action';
+
 import { ThunkActionResult } from '../types/action';
-import { loadOffers, requireAuthorization, requireLogout } from './action';
 import { saveToken, dropToken, Token } from '../services/token';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { OfferResponse } from '../types/offer';
+import { CommentGetResponse } from '../types/comment';
 import { AuthData } from '../types/auth-data';
 
 export const fetchOffersAction = (): ThunkActionResult =>
@@ -11,6 +26,31 @@ export const fetchOffersAction = (): ThunkActionResult =>
     const {data} = await api.get<OfferResponse[]>(APIRoute.Offers);
     const adaptedData = adaptOffersGroupToClient(data);
     dispatch(loadOffers(adaptedData));
+  };
+
+export const fetchCurrentOfferAction = (id: string): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const {data} = await api.get<OfferResponse>(`${APIRoute.Offers}/${id}`);
+      const adaptedData = adaptOfferToClient(data);
+      dispatch(loadCurrentOffer(adaptedData));
+    } catch {
+      dispatch(loadCurrentOfferError());
+    }
+  };
+
+export const fetchCurrentOfferCommentsAction = (id: string): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<CommentGetResponse[]>(`${APIRoute.Comments}/${id}`);
+    const adaptedData = adaptCommentsGorupToClient(data);
+    dispatch(loadCurrentOfferComments(adaptedData));
+  };
+
+export const fetchNearbyOffersAction = (id: string): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const { data } = await api.get<OfferResponse[]>(`${APIRoute.Offers}/${id}${APIRoute.Nearby}`);
+    const adaptedData = adaptOffersGroupToClient(data);
+    dispatch(loadNearbyOffers(adaptedData));
   };
 
 export const checkAuthAction = (): ThunkActionResult =>

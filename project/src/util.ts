@@ -1,5 +1,4 @@
 import { Offer } from './types/offer';
-import { AuthorizationStatus } from './const';
 
 const RATING_RER_STAR = 20;
 
@@ -32,6 +31,3 @@ export const sortOffers = (sortingType: string, offers: Offer[]): Offer[] => {
       return offers;
   }
 };
-
-export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
-  authorizationStatus === AuthorizationStatus.Unknown;

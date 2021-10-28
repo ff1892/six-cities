@@ -26,42 +26,33 @@ function HeaderNavigation({ authorizationStatus, onSignOutClick }: PropsFromRedu
     onSignOutClick();
   };
 
+  const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
+
   return (
     <nav className="header__nav">
       <ul className="header__nav-list">
-        {
-          authorizationStatus === AuthorizationStatus.Auth ?
-            <>
-              <li className="header__nav-item user">
-                <a className="header__nav-link header__nav-link--profile" href="/">
-                  <div className="header__avatar-wrapper user__avatar-wrapper">
-                  </div>
-                  <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                </a>
-              </li>
-              <li className="header__nav-item">
-                <a
-                  className="header__nav-link"
-                  href="/"
-                  onClick={handleSignOut}
-                >
-                  <span className="header__signout">Sign out</span>
-                </a>
-              </li>
-            </>
+        <li className="header__nav-item user">
+          <Link to={isAuthorized ? AppRoute.Favorites : AppRoute.SignIn}>
+            <a className="header__nav-link header__nav-link--profile" href="/">
+              <div className="header__avatar-wrapper user__avatar-wrapper">
+              </div>
+              { isAuthorized
+                ? <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                : <span className="header__login">Sign in</span> }
+            </a>
+          </Link>
+        </li>
 
-            :
-            <Link to={AppRoute.SignIn}>
-              <li className="header__nav-item user">
-                <a className="header__nav-link header__nav-link--profile" href="/">
-                  <div className="header__avatar-wrapper user__avatar-wrapper">
-                  </div>
-                  <span className="header__login">Sign in</span>
-                </a>
-              </li>
-            </Link>
-        }
-
+        { isAuthorized &&
+          <li className="header__nav-item">
+            <a
+              className="header__nav-link"
+              href="/"
+              onClick={handleSignOut}
+            >
+              <span className="header__signout">Sign out</span>
+            </a>
+          </li> }
       </ul>
     </nav>
   );
