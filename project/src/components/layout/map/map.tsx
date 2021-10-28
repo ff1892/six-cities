@@ -27,9 +27,6 @@ function Map({offers, selectedOffer}: MapProps): JSX.Element {
   const markersRef = useRef<LayerGroup>(new leaflet.LayerGroup());
   const mapRef = useRef(null);
 
-  // eslint-disable-next-line no-console
-  console.log(offers);
-
   const city = offers[0].city;
   const map = useMap(mapRef, city);
 

@@ -1,22 +1,22 @@
 import { useState, Fragment, ChangeEvent } from 'react';
 import { MAX_RATING, RatingNames } from '../../../../const';
 
+const REVIEW_MIN_LENGTH = 50;
+
 function FormReview(): JSX.Element {
 
-  const [review, setReview] = useState({
-    rating: 0,
-    text: '',
-  });
+  const [rating, setRating] = useState(0);
+  const [textReview, setTextReview] = useState('');
 
-  const {rating,text} = review;
   const ratingArray: number[] = new Array(MAX_RATING).fill(null).map((value, index) => index + 1);
 
-  const ratingChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setReview({
-      ...review,
-      rating: parseInt(e.target.value, 10),
-    });
+  const ratingChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
+    evt.preventDefault();
+    setRating(parseInt(evt.target.value, 10));
+  };
+
+  const reviewChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+    setTextReview(evt.target.value);
   };
 
   return (
@@ -32,7 +32,7 @@ function FormReview(): JSX.Element {
                 id={value === 1 ? `${value}-star` : `${value}-stars`}
                 type="radio"
                 checked={value === rating}
-                onChange={(e) => ratingChangeHandler(e)}
+                onChange={(evt) => ratingChangeHandler(evt)}
               />
               <label
                 htmlFor={value === 1 ? `${value}-star` : `${value}-stars`}
@@ -52,13 +52,8 @@ function FormReview(): JSX.Element {
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        value={text}
-        onChange={({ target } : ChangeEvent<HTMLTextAreaElement>) => {
-          setReview({
-            ...review,
-            text: target.value,
-          });
-        }}
+        value={textReview}
+        onChange={(evt) => reviewChangeHandler(evt)}
       >
       </textarea>
       <div className="reviews__button-wrapper">
@@ -68,7 +63,13 @@ function FormReview(): JSX.Element {
           and describe your stay with at least{' '}
           <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled>Submit</button>
+        <button
+          className="reviews__submit form__submit button"
+          type="submit"
+          disabled={textReview.length < REVIEW_MIN_LENGTH || !rating}
+        >
+          Submit
+        </button>
       </div>
     </form>
   );
