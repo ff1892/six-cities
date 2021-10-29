@@ -8,6 +8,11 @@ export type CommentGet = {
   user: CommentUser,
 };
 
+export type CommentPost = {
+  comment: string,
+  rating: number,
+};
+
 export type CommentGetResponse = Omit<CommentGet, 'user'> & {
   user: CommentUserResponse;
 };

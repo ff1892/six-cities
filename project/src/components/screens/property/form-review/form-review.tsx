@@ -1,14 +1,33 @@
-import { useState, Fragment, ChangeEvent } from 'react';
+import { useState, Fragment, ChangeEvent, FormEvent } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { useParams } from 'react-router';
 import { MAX_RATING, RatingNames } from '../../../../const';
+import { ThunkAppDispatch } from '../../../../types/action';
+import { CommentPost } from '../../../../types/comment';
+import {
+  commentPostAction,
+  fetchCurrentOfferCommentsAction
+} from '../../../../store/api-actions';
 
 const REVIEW_MIN_LENGTH = 50;
 
-function FormReview(): JSX.Element {
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  onCommentFormSubmit(id: string, commentPost: CommentPost) {
+    dispatch(commentPostAction(id, commentPost));
+    dispatch(fetchCurrentOfferCommentsAction(id));
+  },
+});
+
+const connector = connect(null, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function FormReview({ onCommentFormSubmit }: PropsFromRedux): JSX.Element {
 
   const [rating, setRating] = useState(0);
   const [textReview, setTextReview] = useState('');
 
-  const ratingArray: number[] = new Array(MAX_RATING).fill(null).map((value, index) => index + 1);
+  const ratingArray: number[] = new Array(MAX_RATING).fill(null).map((value, index) => MAX_RATING - index);
+  const { offerId } = useParams<{ offerId: string }>();
 
   const ratingChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
     evt.preventDefault();
@@ -19,8 +38,25 @@ function FormReview(): JSX.Element {
     setTextReview(evt.target.value);
   };
 
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    onCommentFormSubmit(
+      offerId,
+      {
+        rating: rating,
+        comment: textReview,
+      });
+    setRating(0);
+    setTextReview('');
+  };
+
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form
+      className="reviews__form form"
+      action="#"
+      method="post"
+      onSubmit={handleSubmit}
+    >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {
@@ -75,4 +111,5 @@ function FormReview(): JSX.Element {
   );
 }
 
-export default FormReview;
+export {FormReview};
+export default connector(FormReview);

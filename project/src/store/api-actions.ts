@@ -18,7 +18,7 @@ import { ThunkActionResult } from '../types/action';
 import { saveToken, dropToken, Token } from '../services/token';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { OfferResponse } from '../types/offer';
-import { CommentGetResponse } from '../types/comment';
+import { CommentGetResponse, CommentPost } from '../types/comment';
 import { AuthData } from '../types/auth-data';
 
 export const fetchOffersAction = (): ThunkActionResult =>
@@ -51,6 +51,11 @@ export const fetchNearbyOffersAction = (id: string): ThunkActionResult =>
     const { data } = await api.get<OfferResponse[]>(`${APIRoute.Offers}/${id}${APIRoute.Nearby}`);
     const adaptedData = adaptOffersGroupToClient(data);
     dispatch(loadNearbyOffers(adaptedData));
+  };
+
+export const commentPostAction = (id: string, { comment, rating }: CommentPost): ThunkActionResult =>
+  async (_dispatch, _getState, api) => {
+    await api.post((`${APIRoute.Comments}/${id}`), { comment, rating });
   };
 
 export const checkAuthAction = (): ThunkActionResult =>
