@@ -1,4 +1,5 @@
 import { Offer } from '../types/offer';
+import { CommentGet } from '../types/comment';
 import { ActionType } from '../types/action';
 import { AuthorizationStatus } from '../const';
 
@@ -16,6 +17,29 @@ export const loadOffers = (offers: Offer[]) => ({
   type: ActionType.LoadOffers,
   payload: {
     offers,
+  },
+} as const);
+
+export const loadCurrentOffer = (offer: Offer) => ({
+  type: ActionType.LoadCurrentOffer,
+  payload: offer,
+} as const);
+
+export const loadCurrentOfferError = () => ({
+  type: ActionType.LoadCurrentOfferError,
+} as const);
+
+export const loadCurrentOfferComments = (comments: CommentGet[]) => ({
+  type: ActionType.LoadCurrentOfferComments,
+  payload: {
+    comments,
+  },
+} as const);
+
+export const loadNearbyOffers = (nearbyOffers: Offer[]) => ({
+  type: ActionType.LoadNearbyOffers,
+  payload: {
+    nearbyOffers,
   },
 } as const);
 

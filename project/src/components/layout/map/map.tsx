@@ -22,8 +22,7 @@ type MapProps = {
   offers: Offer[],
 };
 
-function Map(props: MapProps): JSX.Element {
-  const { offers, selectedOffer } = props;
+function Map({offers, selectedOffer}: MapProps): JSX.Element {
 
   const markersRef = useRef<LayerGroup>(new leaflet.LayerGroup());
   const mapRef = useRef(null);

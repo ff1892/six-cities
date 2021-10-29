@@ -6,8 +6,15 @@ const InitialState: State = {
   selectedCity: DEFAULT_CITY,
   currentSorting: DEFAULT_SORTING,
   offers: [],
+  isOffersLoaded: false,
+  currentOffer: null,
+  isCurrentOfferLoaded: false,
+  isCurrentOfferError: false,
+  currentOfferComments: [],
+  isCommentsLoaded: false,
+  nearbyOffers: [],
+  isNearbyOffersLoaded: false,
   authorizationStatus: AuthorizationStatus.Unknown,
-  isDataLoaded: false,
 };
 
 const reducer = (state: State = InitialState, action: Actions): State => {
@@ -21,7 +28,36 @@ const reducer = (state: State = InitialState, action: Actions): State => {
       return {
         ...state,
         offers,
-        isDataLoaded: true,
+        isOffersLoaded: true,
+      };
+    }
+    case ActionType.LoadCurrentOffer: {
+      return {
+        ...state,
+        currentOffer: action.payload,
+        isCurrentOfferLoaded: true,
+      };
+    }
+    case ActionType.LoadCurrentOfferError: {
+      return {
+        ...state,
+        isCurrentOfferError: true,
+      };
+    }
+    case ActionType.LoadCurrentOfferComments: {
+      const {comments} = action.payload;
+      return {
+        ...state,
+        currentOfferComments: comments,
+        isCommentsLoaded: true,
+      };
+    }
+    case ActionType.LoadNearbyOffers: {
+      const { nearbyOffers } = action.payload;
+      return {
+        ...state,
+        nearbyOffers,
+        isNearbyOffersLoaded: true,
       };
     }
     case ActionType.RequireAuthorization:

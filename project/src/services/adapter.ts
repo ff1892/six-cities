@@ -1,4 +1,5 @@
 import { Offer, OfferResponse } from '../types/offer';
+import { CommentGet, CommentGetResponse } from '../types/comment';
 
 export const adaptOfferToClient = (offer: OfferResponse): Offer => (
   Object.assign(
@@ -21,4 +22,23 @@ export const adaptOfferToClient = (offer: OfferResponse): Offer => (
 
 export const adaptOffersGroupToClient = (offers: OfferResponse[]): Offer[] => (
   offers.map(adaptOfferToClient)
+);
+
+const adaptCommentToClient = (comment: CommentGetResponse): CommentGet => (
+  Object.assign(
+    comment,
+    {},
+    {
+      user: {
+        avatarUrl: comment.user['avatar_url'],
+        id: comment.user['id'],
+        isPro: comment.user['is_pro'],
+        name: comment.user['name'],
+      },
+    },
+  )
+);
+
+export const adaptCommentsGorupToClient = (comments: CommentGetResponse[]): CommentGet[] => (
+  comments.map(adaptCommentToClient)
 );

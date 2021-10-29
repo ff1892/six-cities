@@ -1,9 +1,4 @@
-type CommentUser = {
-  avatarUrl: string,
-  id: number,
-  isPro: boolean,
-  name: string,
-};
+import { CommentUser, CommentUserResponse } from './user';
 
 export type CommentGet = {
   comment: string,
@@ -11,4 +6,8 @@ export type CommentGet = {
   id: number,
   rating: number,
   user: CommentUser,
+};
+
+export type CommentGetResponse = Omit<CommentGet, 'user'> & {
+  user: CommentUserResponse;
 };
