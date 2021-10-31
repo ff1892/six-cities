@@ -1,24 +1,17 @@
-import { connect, ConnectedProps } from 'react-redux';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { AppRoute } from '../const';
-import { State } from '../types/state';
 import PrivateRoute from '../components/private-route/private-route';
 import MainScreen from '../components/screens/main/main';
 import SignInScreen from '../components/screens/sign-in/sign-in';
 import FavoritesScreen from '../components/screens/favorites/favorites';
 import PropertyScreen from '../components/screens/property/property';
 import NotFoundScreen from '../components/screens/not-found/not-found';
+import { getOffers } from '../store/app-data/selectors';
+import { useSelector } from 'react-redux';
 
-const mapStateToProps = ({authorizationStatus, offers}: State) => ({
-  authorizationStatus,
-  offers,
-});
 
-const connector = connect(mapStateToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function App({offers}: PropsFromRedux): JSX.Element {
+function App(): JSX.Element {
+  const offers = useSelector(getOffers);
 
   return (
     <BrowserRouter>
@@ -46,5 +39,4 @@ function App({offers}: PropsFromRedux): JSX.Element {
   );
 }
 
-export {App};
-export default connector(App);
+export default App;

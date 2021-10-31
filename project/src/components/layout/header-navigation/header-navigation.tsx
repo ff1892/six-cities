@@ -1,32 +1,20 @@
 import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { State } from '../../../types/state';
-import { connect, ConnectedProps } from 'react-redux';
 import { AppRoute, AuthorizationStatus } from '../../../const';
-import { ThunkAppDispatch } from '../../../types/action';
 import { logoutAction } from '../../../store/api-actions';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAuthorizationStatus } from '../../../store/user-data/selectors';
 
-const mapStateToProps = ({authorizationStatus}: State) => ({
-  authorizationStatus,
-});
+function HeaderNavigation(): JSX.Element {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
 
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onSignOutClick() {
-    dispatch(logoutAction());
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function HeaderNavigation({ authorizationStatus, onSignOutClick }: PropsFromRedux): JSX.Element {
+  const dispatch = useDispatch();
 
   const handleSignOut = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
-    onSignOutClick();
+    dispatch(logoutAction());
   };
-
-  const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
 
   return (
     <nav className="header__nav">
@@ -58,5 +46,4 @@ function HeaderNavigation({ authorizationStatus, onSignOutClick }: PropsFromRedu
   );
 }
 
-export {HeaderNavigation};
-export default connector(HeaderNavigation);
+export default HeaderNavigation;
