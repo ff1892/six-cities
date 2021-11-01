@@ -1,27 +1,16 @@
 import { useState, Fragment, ChangeEvent, FormEvent } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
-import { MAX_RATING, RatingNames } from '../../../../const';
-import { ThunkAppDispatch } from '../../../../types/action';
-import { CommentPost } from '../../../../types/comment';
+import { validateReviewForm } from '../../../../utils';
+import { MAX_RATING, MessageLength, RatingNames } from '../../../../const';
 import {
   commentPostAction,
   fetchCurrentOfferCommentsAction
 } from '../../../../store/api-actions';
 
-const REVIEW_MIN_LENGTH = 50;
+function FormReview(): JSX.Element {
 
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onCommentFormSubmit(id: string, commentPost: CommentPost) {
-    dispatch(commentPostAction(id, commentPost));
-    dispatch(fetchCurrentOfferCommentsAction(id));
-  },
-});
-
-const connector = connect(null, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function FormReview({ onCommentFormSubmit }: PropsFromRedux): JSX.Element {
+  const dispatch = useDispatch();
 
   const [rating, setRating] = useState(0);
   const [textReview, setTextReview] = useState('');
@@ -30,7 +19,6 @@ function FormReview({ onCommentFormSubmit }: PropsFromRedux): JSX.Element {
   const { offerId } = useParams<{ offerId: string }>();
 
   const ratingChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
-    evt.preventDefault();
     setRating(parseInt(evt.target.value, 10));
   };
 
@@ -40,12 +28,8 @@ function FormReview({ onCommentFormSubmit }: PropsFromRedux): JSX.Element {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    onCommentFormSubmit(
-      offerId,
-      {
-        rating: rating,
-        comment: textReview,
-      });
+    dispatch(commentPostAction(offerId, {rating, comment: textReview}));
+    dispatch(fetchCurrentOfferCommentsAction(offerId));
     setRating(0);
     setTextReview('');
   };
@@ -68,7 +52,7 @@ function FormReview({ onCommentFormSubmit }: PropsFromRedux): JSX.Element {
                 id={value === 1 ? `${value}-star` : `${value}-stars`}
                 type="radio"
                 checked={value === rating}
-                onChange={(evt) => ratingChangeHandler(evt)}
+                onChange={ratingChangeHandler}
               />
               <label
                 htmlFor={value === 1 ? `${value}-star` : `${value}-stars`}
@@ -89,20 +73,24 @@ function FormReview({ onCommentFormSubmit }: PropsFromRedux): JSX.Element {
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={textReview}
-        onChange={(evt) => reviewChangeHandler(evt)}
+        onChange={reviewChangeHandler}
       >
       </textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set{' '}
           <span className="reviews__star">rating</span>
-          and describe your stay with at least{' '}
-          <b className="reviews__text-amount">50 characters</b>.
+          and describe your stay with
+          {textReview.length < MessageLength.Min ? ' at least ': ' up to '}
+          <b className="reviews__text-amount">
+            {textReview.length < MessageLength.Min ? ' 50 ' : ' 300 '}
+            characters
+          </b>.
         </p>
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={textReview.length < REVIEW_MIN_LENGTH || !rating}
+          disabled={!validateReviewForm(textReview, rating)}
         >
           Submit
         </button>
@@ -111,5 +99,4 @@ function FormReview({ onCommentFormSubmit }: PropsFromRedux): JSX.Element {
   );
 }
 
-export {FormReview};
-export default connector(FormReview);
+export default FormReview;

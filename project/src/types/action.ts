@@ -4,14 +4,17 @@ import { AxiosInstance } from 'axios';
 import { State } from '../types/state';
 
 export enum ActionType {
-  ChangeCity = 'main/changeCity',
-  ChangeSorting = 'main/ChangeSorting',
+  ChangeCity = 'state/changeCity',
+  ChangeSorting = 'state/ChangeSorting',
   LoadOffers = 'data/LoadOffers',
   LoadCurrentOffer = 'data/LoadCurrentOffer',
   LoadCurrentOfferError = 'data/LoadCurrentOfferError',
   LoadCurrentOfferComments = 'data/LoadCurrentOfferComments',
   LoadNearbyOffers = 'data/LoadNearbyOffers',
-  RequireAuthorization = 'user/requireAuthorization',
+  LoadFavoriteOffers = 'data/LoadFavoriteOffers',
+  UpdateOffer = 'data/UpdateOffer',
+  RequireAuthorization = 'user/RequireAuthorization',
+  LoadUserInfo = 'user/LoadUserInfo',
   RequireLogout = 'user/requireLogout',
 }
 

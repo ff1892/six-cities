@@ -39,4 +39,12 @@ export const getLoadedNearbyOffersStatus = (state: State): boolean => (
   state[NameSpace.data].isCommentsLoaded
 );
 
+export const getFavoriteOffers = (state: State): Offer[] => (
+  state[NameSpace.data].favoriteOffers
+);
+
+export const getLoadedFavoriteOffersStatus = (state: State): boolean => (
+  state[NameSpace.data].isFavoriteOffersLoaded
+);
+
 

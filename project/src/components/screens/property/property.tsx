@@ -4,19 +4,21 @@ import FormReview from './form-review/form-review';
 import ReviewsList from './reviews-list/reviews-list';
 import CardsList from '../../layout/cards-list/cards-list';
 import Map from '../../layout/map/map';
-import { useParams } from 'react-router';
-import { getStarsRatingStyle } from '../../../util';
+import { useHistory, useParams } from 'react-router';
+import { getStarsRatingStyle } from '../../../utils';
 import Loader from '../../layout/loader/loader';
 import LoadWrapper from '../../layout/loader-wrapper/loader-wrapper';
 import NotFound from '../not-found/not-found';
-import { AuthorizationStatus } from '../../../const';
+import { AppRoute, AuthorizationStatus } from '../../../const';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAuthorizationStatus } from '../../../store/user-data/selectors';
+import { MouseEvent } from 'react';
 
 import {
   fetchCurrentOfferAction,
   fetchNearbyOffersAction,
-  fetchCurrentOfferCommentsAction
+  fetchCurrentOfferCommentsAction,
+  switchIsFavoriteAction
 } from '../../../store/api-actions';
 
 import {
@@ -49,6 +51,7 @@ function Property(): JSX.Element {
   const authorizationStatus = useSelector(getAuthorizationStatus);
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const fetchCurrentOffer = useCallback(
     (id: string) => dispatch(fetchCurrentOfferAction(id)),
@@ -89,6 +92,7 @@ function Property(): JSX.Element {
   }
 
   const {
+    id,
     images,
     type,
     isPremium,
@@ -108,6 +112,17 @@ function Property(): JSX.Element {
     isPro,
     name,
   } = host;
+
+
+  const handleOfferFavoritesClick = (evt: MouseEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+    if (!isAuthorized) {
+      history.push(AppRoute.SignIn);
+      return;
+    }
+    const status = Number(!isFavorite);
+    dispatch(switchIsFavoriteAction(id, status));
+  };
 
   return (
     <div className="page">
@@ -147,6 +162,7 @@ function Property(): JSX.Element {
                       : 'property__bookmark-button button'
                   }
                   type="button"
+                  onClick={handleOfferFavoritesClick}
                 >
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
@@ -236,7 +252,7 @@ function Property(): JSX.Element {
                 marginRight: 'auto',
               }}
             >
-              <Map offers={nearbyOffers} selectedOffer={selectedOffer}/>
+              <Map offers={nearbyOffers} selectedOffer={selectedOffer} mainOffer={currentOffer}/>
             </section>
           </LoadWrapper>
         </section>

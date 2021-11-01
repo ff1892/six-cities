@@ -1,10 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { UserData } from '../../types/state';
 import { AuthorizationStatus } from '../../const';
-import { requireAuthorization, requireLogout } from '../action';
+import { loadUserInfo, requireAuthorization, requireLogout } from '../action';
 
 const initialState: UserData = {
   authorizationStatus: AuthorizationStatus.Unknown,
+  userInfo: null,
 };
 
 const userData = createReducer(initialState, (builder) => {
@@ -12,7 +13,10 @@ const userData = createReducer(initialState, (builder) => {
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
     })
-    .addCase(requireLogout, (state, action) => {
+    .addCase(loadUserInfo, (state, action) => {
+      state.userInfo = action.payload;
+    })
+    .addCase(requireLogout, (state) => {
       state.authorizationStatus = AuthorizationStatus.NoAuth;
     });
 });

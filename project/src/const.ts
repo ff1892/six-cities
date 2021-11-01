@@ -9,7 +9,7 @@ export enum APIRoute {
   Offers = '/hotels',
   Comments = '/comments',
   Nearby = '/nearby',
-  Favorites = '/favorites',
+  Favorite = '/favorite',
   Login = '/login',
   Logout = '/logout',
 }
@@ -54,3 +54,8 @@ export const SortingTypes = [
   'Price: high to low',
   'Top rated first',
 ];
+
+export enum MessageLength {
+  Min = 50,
+  Max = 300,
+}

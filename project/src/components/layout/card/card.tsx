@@ -1,7 +1,12 @@
 import { MouseEvent } from 'react';
+import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../../types/offer';
 import { AppRoute } from '../../../const';
+import { AuthorizationStatus } from '../../../const';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAuthorizationStatus } from '../../../store/user-data/selectors';
+import { switchIsFavoriteAction } from '../../../store/api-actions';
 
 type CardProps = {
   offer: Offer,
@@ -12,6 +17,8 @@ type CardProps = {
 }
 
 function CardMain({ offer, articleClass, wrapperClass, onMouseEnter, onMouseLeave}: CardProps): JSX.Element {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const dispatch = useDispatch();
 
   const {
     id,
@@ -23,6 +30,18 @@ function CardMain({ offer, articleClass, wrapperClass, onMouseEnter, onMouseLeav
     rating,
     type,
   } = offer;
+
+  const history = useHistory();
+
+  const handleOfferFavoritesClick = (evt: MouseEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      history.push(AppRoute.SignIn);
+      return;
+    }
+    const status = Number(!isFavorite);
+    dispatch(switchIsFavoriteAction(id, status));
+  };
 
   return (
     <article
@@ -54,11 +73,14 @@ function CardMain({ offer, articleClass, wrapperClass, onMouseEnter, onMouseLeav
                 : 'place-card__bookmark-button button'
             }
             type="button"
+            onClick={handleOfferFavoritesClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
-            <span className="visually-hidden">In bookmarks</span>
+            <span className="visually-hidden">
+              {authorizationStatus ? 'In bookmarks': 'To bookmarks'}
+            </span>
           </button>
         </div>
         <div className="place-card__rating rating">

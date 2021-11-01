@@ -1,8 +1,9 @@
 import { Offer, OfferResponse } from '../types/offer';
 import { CommentGet, CommentGetResponse } from '../types/comment';
+import { UserInfo, UserInfoResponse } from '../types/user';
 
-export const adaptOfferToClient = (offer: OfferResponse): Offer => (
-  Object.assign(
+export const adaptOfferToClient = (offer: OfferResponse): Offer => {
+  const adaptedOffer = Object.assign(
     offer,
     {},
     {
@@ -17,15 +18,17 @@ export const adaptOfferToClient = (offer: OfferResponse): Offer => (
       maxAdults: offer['max_adults'],
       previewImage: offer['preview_image'],
     },
-  )
-);
+  );
+
+  return adaptedOffer;
+};
 
 export const adaptOffersGroupToClient = (offers: OfferResponse[]): Offer[] => (
   offers.map(adaptOfferToClient)
 );
 
-const adaptCommentToClient = (comment: CommentGetResponse): CommentGet => (
-  Object.assign(
+const adaptCommentToClient = (comment: CommentGetResponse): CommentGet => {
+  const adaptedComment = Object.assign(
     comment,
     {},
     {
@@ -36,9 +39,28 @@ const adaptCommentToClient = (comment: CommentGetResponse): CommentGet => (
         name: comment.user['name'],
       },
     },
-  )
-);
+  );
+
+  return adaptedComment;
+};
 
 export const adaptCommentsGorupToClient = (comments: CommentGetResponse[]): CommentGet[] => (
   comments.map(adaptCommentToClient)
 );
+
+export const adaptAuthInfoToClient = (authInfo: UserInfoResponse): UserInfo => {
+  const adaptedAuthInfo = Object.assign(
+    authInfo,
+    {},
+    {
+      avatarUrl: authInfo['avatar_url'],
+      id: authInfo['id'],
+      isPro: authInfo['is_pro'],
+      name: authInfo['name'],
+      email: authInfo['email'],
+      token: authInfo['token'],
+    },
+  );
+
+  return adaptedAuthInfo;
+};

@@ -6,12 +6,9 @@ import SignInScreen from '../components/screens/sign-in/sign-in';
 import FavoritesScreen from '../components/screens/favorites/favorites';
 import PropertyScreen from '../components/screens/property/property';
 import NotFoundScreen from '../components/screens/not-found/not-found';
-import { getOffers } from '../store/app-data/selectors';
-import { useSelector } from 'react-redux';
 
 
 function App(): JSX.Element {
-  const offers = useSelector(getOffers);
 
   return (
     <BrowserRouter>
@@ -25,7 +22,7 @@ function App(): JSX.Element {
         <PrivateRoute
           exact
           path={AppRoute.Favorites}
-          render={() => <FavoritesScreen offers={offers} />}
+          render={() => <FavoritesScreen />}
         >
         </PrivateRoute>
         <Route exact path={`${AppRoute.Offers}/:offerId`}>

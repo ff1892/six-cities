@@ -1,3 +1,9 @@
+import {
+  updateCurrentOffer,
+  updateOffersList,
+  updateFavoriteOffersList
+} from '../../utils';
+
 import { AppData } from '../../types/state';
 import { createReducer } from '@reduxjs/toolkit';
 import {
@@ -5,7 +11,9 @@ import {
   loadCurrentOffer,
   loadCurrentOfferComments,
   loadCurrentOfferError,
-  loadNearbyOffers
+  loadNearbyOffers,
+  loadFavoriteOffers,
+  UpdateOffer
 } from '../action';
 
 const initialState: AppData = {
@@ -18,6 +26,8 @@ const initialState: AppData = {
   isCommentsLoaded: false,
   nearbyOffers: [],
   isNearbyOffersLoaded: false,
+  favoriteOffers: [],
+  isFavoriteOffersLoaded: false,
 };
 
 const appData = createReducer(initialState, (builder) => {
@@ -43,6 +53,20 @@ const appData = createReducer(initialState, (builder) => {
       const { nearbyOffers } = action.payload;
       state.nearbyOffers = nearbyOffers;
       state.isNearbyOffersLoaded = true;
+    })
+    .addCase(loadFavoriteOffers, (state, action) => {
+      const { favoriteOffers } = action.payload;
+      state.favoriteOffers = favoriteOffers;
+      state.isFavoriteOffersLoaded = true;
+    })
+    .addCase(UpdateOffer, (state, action) => {
+      const {updatedOffer} = action.payload;
+      if (state.currentOffer) {
+        state.currentOffer = updateCurrentOffer(state.currentOffer, updatedOffer);
+      }
+      state.offers = updateOffersList(state.offers, updatedOffer);
+      state.nearbyOffers = updateOffersList(state.nearbyOffers, updatedOffer);
+      state.favoriteOffers = updateFavoriteOffersList(state.favoriteOffers, updatedOffer);
     });
 });
 

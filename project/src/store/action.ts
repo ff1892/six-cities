@@ -3,6 +3,7 @@ import { Offer } from '../types/offer';
 import { CommentGet } from '../types/comment';
 import { ActionType } from '../types/action';
 import { AuthorizationStatus } from '../const';
+import { UserInfo } from '../types/user';
 
 export const changeCity = createAction(
   ActionType.ChangeCity,
@@ -54,11 +55,37 @@ export const loadNearbyOffers = createAction(
   }),
 );
 
+export const loadFavoriteOffers = createAction(
+  ActionType.LoadFavoriteOffers,
+  (favoriteOffers: Offer[]) => ({
+    payload: {
+      favoriteOffers,
+    },
+  }),
+);
+
+export const UpdateOffer = createAction(
+  ActionType.UpdateOffer,
+  (updatedOffer: Offer) => ({
+    payload: {
+      updatedOffer,
+    },
+  }),
+);
+
 export const requireAuthorization = createAction(
   ActionType.RequireAuthorization,
   (authStatus: AuthorizationStatus) => ({
     payload: authStatus,
   }),
 );
+
+export const loadUserInfo = createAction(
+  ActionType.LoadUserInfo,
+  (userInfo: UserInfo) => ({
+    payload: userInfo,
+  }),
+);
+
 
 export const requireLogout = createAction(ActionType.RequireLogout);
