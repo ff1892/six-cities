@@ -1,5 +1,5 @@
 import { CommentGet } from '../../../../types/comment';
-import { getStarsRatingStyle, getDisplayedDate, getAttributedDate } from '../../../../util';
+import { getStarsRatingStyle, getDisplayedDate, getAttributedDate } from '../../../../utils';
 
 type ReviewProps = {
   review: CommentGet;

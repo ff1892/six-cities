@@ -1,29 +1,19 @@
 import { useRef, FormEvent } from 'react';
-import { useHistory } from 'react-router';
-import { connect, ConnectedProps } from 'react-redux';
 import { loginAction } from '../../../store/api-actions';
-import { ThunkAppDispatch } from '../../../types/action';
 import { AuthData } from '../../../types/auth-data';
 import Header from '../../layout/header/header';
-import { AppRoute } from '../../../const';
+import { Redirect } from 'react-router';
+import { AppRoute, AuthorizationStatus } from '../../../const';
+import { getAuthorizationStatus } from '../../../store/user-data/selectors';
+import { useSelector, useDispatch } from 'react-redux';
 
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onFormSubmit(authData: AuthData) {
-    dispatch(loginAction(authData));
-  },
-});
-
-const connector = connect(null, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function SignIn(props: PropsFromRedux): JSX.Element {
-  const {onFormSubmit} = props;
+function SignIn(): JSX.Element {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const dispatch = useDispatch();
+  const onFormSubmit = (authData: AuthData) => dispatch(loginAction(authData));
 
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
-  const history = useHistory();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -33,9 +23,12 @@ function SignIn(props: PropsFromRedux): JSX.Element {
         login: loginRef.current.value,
         password: passwordRef.current.value,
       });
-      history.push(AppRoute.Main);
     }
   };
+
+  if (authorizationStatus === AuthorizationStatus.Auth) {
+    return <Redirect to={AppRoute.Main} />;
+  }
 
   return (
     <div className="page page--gray page--login">
@@ -89,5 +82,4 @@ function SignIn(props: PropsFromRedux): JSX.Element {
   );
 }
 
-export { SignIn };
-export default connector(SignIn);
+export default SignIn;

@@ -1,24 +1,35 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Header from '../../layout/header/header';
 import FormReview from './form-review/form-review';
 import ReviewsList from './reviews-list/reviews-list';
 import CardsList from '../../layout/cards-list/cards-list';
 import Map from '../../layout/map/map';
-import { useParams } from 'react-router';
-import { getStarsRatingStyle } from '../../../util';
-import { State } from '../../../types/state';
-import { ThunkAppDispatch } from '../../../types/action';
-import { connect, ConnectedProps } from 'react-redux';
+import { useHistory, useParams } from 'react-router';
+import { getStarsRatingStyle } from '../../../utils';
 import Loader from '../../layout/loader/loader';
 import LoadWrapper from '../../layout/loader-wrapper/loader-wrapper';
 import NotFound from '../not-found/not-found';
-import { AuthorizationStatus } from '../../../const';
+import { AppRoute, AuthorizationStatus } from '../../../const';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAuthorizationStatus } from '../../../store/user-data/selectors';
+import { MouseEvent } from 'react';
 
 import {
   fetchCurrentOfferAction,
   fetchNearbyOffersAction,
-  fetchCurrentOfferCommentsAction
+  fetchCurrentOfferCommentsAction,
+  switchIsFavoriteAction
 } from '../../../store/api-actions';
+
+import {
+  getCurrentOffer,
+  getLoadedCommentsStatus,
+  getLoadedCurrentOfferStatus,
+  getLoadedNearbyOffersStatus,
+  getNearbyOffers,
+  getOfferComments,
+  getOfferErrorStatus
+} from '../../../store/app-data/selectors';
 
 const MAX_IMAGES_GALLERY = 6;
 
@@ -28,54 +39,34 @@ const CardClasses = {
   wrapperClass: 'near-places__image-wrapper',
 };
 
-const mapStateToProps = ({
-  currentOffer,
-  isCurrentOfferLoaded,
-  nearbyOffers,
-  isCurrentOfferError,
-  currentOfferComments,
-  isCommentsLoaded,
-  isNearbyOffersLoaded,
-  authorizationStatus,
-}: State) => ({
-  currentOffer,
-  isCurrentOfferLoaded,
-  isCurrentOfferError,
-  currentOfferComments,
-  isCommentsLoaded,
-  nearbyOffers,
-  isNearbyOffersLoaded,
-  authorizationStatus,
-});
+function Property(): JSX.Element {
 
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  fetchCurrentOffer(id: string) {
-    dispatch(fetchCurrentOfferAction(id));
-  },
-  fetchNearbyOffers(id: string) {
-    dispatch(fetchNearbyOffersAction(id));
-  },
-  fetchCurrentOfferComments(id: string) {
-    dispatch(fetchCurrentOfferCommentsAction(id));
-  },
-});
+  const currentOffer = useSelector(getCurrentOffer);
+  const isCurrentOfferLoaded = useSelector(getLoadedCurrentOfferStatus);
+  const isCurrentOfferError = useSelector(getOfferErrorStatus);
+  const currentOfferComments = useSelector(getOfferComments);
+  const isCommentsLoaded = useSelector(getLoadedCommentsStatus);
+  const nearbyOffers = useSelector(getNearbyOffers);
+  const isNearbyOffersLoaded = useSelector(getLoadedNearbyOffersStatus);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-function Property({
-  currentOffer,
-  isCurrentOfferLoaded,
-  isCurrentOfferError,
-  currentOfferComments,
-  isCommentsLoaded,
-  nearbyOffers,
-  isNearbyOffersLoaded,
-  authorizationStatus,
-  fetchCurrentOffer,
-  fetchNearbyOffers,
-  fetchCurrentOfferComments,
-}: PropsFromRedux): JSX.Element {
+  const fetchCurrentOffer = useCallback(
+    (id: string) => dispatch(fetchCurrentOfferAction(id)),
+    [dispatch],
+  );
+
+  const fetchNearbyOffers = useCallback(
+    (id: string) => dispatch(fetchNearbyOffersAction(id)),
+    [dispatch],
+  );
+
+  const fetchCurrentOfferComments = useCallback(
+    (id: string) => dispatch(fetchCurrentOfferCommentsAction(id)),
+    [dispatch],
+  );
 
   const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
 
@@ -101,6 +92,7 @@ function Property({
   }
 
   const {
+    id,
     images,
     type,
     isPremium,
@@ -120,6 +112,17 @@ function Property({
     isPro,
     name,
   } = host;
+
+
+  const handleOfferFavoritesClick = (evt: MouseEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+    if (!isAuthorized) {
+      history.push(AppRoute.SignIn);
+      return;
+    }
+    const status = Number(!isFavorite);
+    dispatch(switchIsFavoriteAction(id, status));
+  };
 
   return (
     <div className="page">
@@ -159,6 +162,7 @@ function Property({
                       : 'property__bookmark-button button'
                   }
                   type="button"
+                  onClick={handleOfferFavoritesClick}
                 >
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
@@ -248,7 +252,7 @@ function Property({
                 marginRight: 'auto',
               }}
             >
-              <Map offers={nearbyOffers} selectedOffer={selectedOffer}/>
+              <Map offers={nearbyOffers} selectedOffer={selectedOffer} mainOffer={currentOffer}/>
             </section>
           </LoadWrapper>
         </section>
@@ -265,5 +269,4 @@ function Property({
   );
 }
 
-export {Property};
-export default connector(Property);
+export default Property;

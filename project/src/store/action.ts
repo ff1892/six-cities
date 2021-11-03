@@ -1,53 +1,91 @@
+import { createAction } from '@reduxjs/toolkit';
 import { Offer } from '../types/offer';
 import { CommentGet } from '../types/comment';
 import { ActionType } from '../types/action';
 import { AuthorizationStatus } from '../const';
+import { UserInfo } from '../types/user';
 
-export const changeCity = (city: string) => ({
-  type: ActionType.ChangeCity,
-  payload: city,
-} as const);
+export const changeCity = createAction(
+  ActionType.ChangeCity,
+  (city: string) => ({
+    payload: city,
+  }),
+);
 
-export const changeSorting = (currentSorting: string) => ({
-  type: ActionType.ChangeSorting,
-  payload: currentSorting,
-} as const);
+export const changeSorting = createAction(
+  ActionType.ChangeSorting,
+  (currentSorting: string) => ({
+    payload: currentSorting,
+  }),
+);
 
-export const loadOffers = (offers: Offer[]) => ({
-  type: ActionType.LoadOffers,
-  payload: {
-    offers,
-  },
-} as const);
+export const loadOffers = createAction(
+  ActionType.LoadOffers,
+  (offers: Offer[]) => ({
+    payload: {
+      offers,
+    },
+  }),
+);
 
-export const loadCurrentOffer = (offer: Offer) => ({
-  type: ActionType.LoadCurrentOffer,
-  payload: offer,
-} as const);
+export const loadCurrentOffer = createAction(
+  ActionType.LoadCurrentOffer,
+  (currentOffer: Offer) => ({
+    payload: currentOffer,
+  }),
+);
 
-export const loadCurrentOfferError = () => ({
-  type: ActionType.LoadCurrentOfferError,
-} as const);
+export const loadCurrentOfferError = createAction(ActionType.LoadCurrentOfferError);
 
-export const loadCurrentOfferComments = (comments: CommentGet[]) => ({
-  type: ActionType.LoadCurrentOfferComments,
-  payload: {
-    comments,
-  },
-} as const);
+export const loadCurrentOfferComments = createAction(
+  ActionType.LoadCurrentOfferComments,
+  (comments: CommentGet[]) => ({
+    payload: {
+      comments,
+    },
+  }),
+);
 
-export const loadNearbyOffers = (nearbyOffers: Offer[]) => ({
-  type: ActionType.LoadNearbyOffers,
-  payload: {
-    nearbyOffers,
-  },
-} as const);
+export const loadNearbyOffers = createAction(
+  ActionType.LoadNearbyOffers,
+  (nearbyOffers: Offer[]) => ({
+    payload: {
+      nearbyOffers,
+    },
+  }),
+);
 
-export const requireAuthorization = (authStatus: AuthorizationStatus) => ({
-  type: ActionType.RequireAuthorization,
-  payload: authStatus,
-} as const);
+export const loadFavoriteOffers = createAction(
+  ActionType.LoadFavoriteOffers,
+  (favoriteOffers: Offer[]) => ({
+    payload: {
+      favoriteOffers,
+    },
+  }),
+);
 
-export const requireLogout = () => ({
-  type: ActionType.RequireLogout,
-} as const);
+export const UpdateOffer = createAction(
+  ActionType.UpdateOffer,
+  (updatedOffer: Offer) => ({
+    payload: {
+      updatedOffer,
+    },
+  }),
+);
+
+export const requireAuthorization = createAction(
+  ActionType.RequireAuthorization,
+  (authStatus: AuthorizationStatus) => ({
+    payload: authStatus,
+  }),
+);
+
+export const loadUserInfo = createAction(
+  ActionType.LoadUserInfo,
+  (userInfo: UserInfo) => ({
+    payload: userInfo,
+  }),
+);
+
+
+export const requireLogout = createAction(ActionType.RequireLogout);

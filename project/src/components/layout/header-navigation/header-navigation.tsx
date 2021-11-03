@@ -1,32 +1,21 @@
 import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { State } from '../../../types/state';
-import { connect, ConnectedProps } from 'react-redux';
 import { AppRoute, AuthorizationStatus } from '../../../const';
-import { ThunkAppDispatch } from '../../../types/action';
 import { logoutAction } from '../../../store/api-actions';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAuthorizationStatus, getUserInfo } from '../../../store/user-data/selectors';
 
-const mapStateToProps = ({authorizationStatus}: State) => ({
-  authorizationStatus,
-});
+function HeaderNavigation(): JSX.Element {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const userInfo = useSelector(getUserInfo);
+  const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
 
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onSignOutClick() {
-    dispatch(logoutAction());
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function HeaderNavigation({ authorizationStatus, onSignOutClick }: PropsFromRedux): JSX.Element {
+  const dispatch = useDispatch();
 
   const handleSignOut = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
-    onSignOutClick();
+    dispatch(logoutAction());
   };
-
-  const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
 
   return (
     <nav className="header__nav">
@@ -34,10 +23,14 @@ function HeaderNavigation({ authorizationStatus, onSignOutClick }: PropsFromRedu
         <li className="header__nav-item user">
           <Link to={isAuthorized ? AppRoute.Favorites : AppRoute.SignIn}>
             <a className="header__nav-link header__nav-link--profile" href="/">
-              <div className="header__avatar-wrapper user__avatar-wrapper">
-              </div>
+              <div className="header__avatar-wrapper user__avatar-wrapper"
+                style={{
+                  backgroundImage: `url(${userInfo?.avatarUrl})`,
+                  borderRadius: '50%',
+                }}
+              />
               { isAuthorized
-                ? <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                ? <span className="header__user-name user__name">{userInfo?.email}</span>
                 : <span className="header__login">Sign in</span> }
             </a>
           </Link>
@@ -58,5 +51,4 @@ function HeaderNavigation({ authorizationStatus, onSignOutClick }: PropsFromRedu
   );
 }
 
-export {HeaderNavigation};
-export default connector(HeaderNavigation);
+export default HeaderNavigation;

@@ -1,7 +1,8 @@
 import {
   adaptOfferToClient,
   adaptOffersGroupToClient,
-  adaptCommentsGorupToClient
+  adaptCommentsGorupToClient,
+  adaptAuthInfoToClient
 } from '../services/adapter';
 
 import {
@@ -11,15 +12,19 @@ import {
   loadCurrentOfferComments,
   loadNearbyOffers,
   requireAuthorization,
-  requireLogout
+  loadUserInfo,
+  requireLogout,
+  loadFavoriteOffers,
+  UpdateOffer
 } from './action';
 
 import { ThunkActionResult } from '../types/action';
-import { saveToken, dropToken, Token } from '../services/token';
+import { saveToken, dropToken } from '../services/token';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { OfferResponse } from '../types/offer';
-import { CommentGetResponse } from '../types/comment';
+import { CommentGetResponse, CommentPost } from '../types/comment';
 import { AuthData } from '../types/auth-data';
+import { UserInfoResponse } from '../types/user';
 
 export const fetchOffersAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -53,19 +58,42 @@ export const fetchNearbyOffersAction = (id: string): ThunkActionResult =>
     dispatch(loadNearbyOffers(adaptedData));
   };
 
+export const commentPostAction = (id: string, { comment, rating }: CommentPost): ThunkActionResult =>
+  async (_dispatch, _getState, api) => {
+    await api.post((`${APIRoute.Comments}/${id}`), { comment, rating });
+  };
+
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    await api.get(APIRoute.Login)
-      .then(() => {
+    await api.get<UserInfoResponse>(APIRoute.Login)
+      .then(({data}) => {
         dispatch(requireAuthorization(AuthorizationStatus.Auth));
+        const adaptedUserResponse = adaptAuthInfoToClient(data);
+        dispatch(loadUserInfo(adaptedUserResponse));
       });
   };
 
 export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const { data: { token } } = await api.post<{ token: Token }>(APIRoute.Login, { email, password });
-    saveToken(token);
+    const { data } = await api.post<UserInfoResponse>(APIRoute.Login, { email, password });
+    saveToken(data.token);
+    const adaptedUserResponse = adaptAuthInfoToClient(data);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    dispatch(loadUserInfo(adaptedUserResponse));
+  };
+
+export const fetchFavoriteOffersAction = (): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const { data } = await api.get<OfferResponse[]>(APIRoute.Favorite);
+    const adaptedData = adaptOffersGroupToClient(data);
+    dispatch(loadFavoriteOffers(adaptedData));
+  };
+
+export const switchIsFavoriteAction = (id: number, status: number): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    const { data } = await api.post<OfferResponse>((`${APIRoute.Favorite}/${id}/${status}`));
+    const adaptedData = adaptOfferToClient(data);
+    dispatch(UpdateOffer(adaptedData));
   };
 
 export const logoutAction = (): ThunkActionResult =>

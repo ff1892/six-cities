@@ -2,7 +2,7 @@ import 'leaflet/dist/leaflet.css';
 import { useEffect, useRef } from 'react';
 import useMap from '../../../hooks/useMap';
 import { MarkerUrl } from '../../../const';
-import leaflet, { LayerGroup, Icon, Marker } from 'leaflet';
+import leaflet, { LayerGroup, Icon, Marker, Circle } from 'leaflet';
 import { Offer } from '../../../types/offer';
 
 const defaultIcon = new Icon({
@@ -17,17 +17,29 @@ const activeIcon = new Icon({
   iconAnchor: [15, 40],
 });
 
+const createMainOfferCircle = (lat: number, lng: number) => (
+  new Circle (
+    [lat, lng],
+    600,
+    { fillColor: '#5199FF',
+      fillOpacity: 0.1,
+      opacity: 0,
+    },
+  )
+);
+
 type MapProps = {
   selectedOffer: number | null,
   offers: Offer[],
+  mainOffer?: Offer;
 };
 
-function Map({offers, selectedOffer}: MapProps): JSX.Element {
+function Map({offers, selectedOffer, mainOffer}: MapProps): JSX.Element {
 
   const markersRef = useRef<LayerGroup>(new leaflet.LayerGroup());
   const mapRef = useRef(null);
 
-  const city = offers[0].city;
+  const city = mainOffer ? mainOffer.city: offers[0].city;
   const map = useMap(mapRef, city);
 
   useEffect(() => {
@@ -53,10 +65,11 @@ function Map({offers, selectedOffer}: MapProps): JSX.Element {
       });
 
       const isHovered = selectedOffer && offer.id === selectedOffer;
+      const hoveredIcon = mainOffer ? defaultIcon : activeIcon;
 
       marker.setIcon(
         isHovered
-          ? activeIcon
+          ? hoveredIcon
           : defaultIcon)
         .addTo(markersRef.current);
 
@@ -66,12 +79,25 @@ function Map({offers, selectedOffer}: MapProps): JSX.Element {
           offer.location.longitude,
         ],
         offer.location.zoom);
+
+      if (mainOffer) {
+        const mainMarker = new Marker({
+          lat: mainOffer.location.latitude,
+          lng: mainOffer.location.longitude,
+        });
+        mainMarker.setIcon(activeIcon)
+          .addTo(markersRef.current);
+
+        const mainOfferCircle = createMainOfferCircle(
+          mainOffer.location.latitude, mainOffer.location.longitude);
+        mainOfferCircle.addTo(markersRef.current);
+      }
     });
 
     markersRef.current.addTo(map);
   },
 
-  [selectedOffer, city, map, offers]);
+  [selectedOffer, city, map, offers, mainOffer]);
 
   return (
     <div

@@ -1,17 +1,24 @@
-import { useState, Fragment, ChangeEvent } from 'react';
-import { MAX_RATING, RatingNames } from '../../../../const';
-
-const REVIEW_MIN_LENGTH = 50;
+import { useState, Fragment, ChangeEvent, FormEvent } from 'react';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
+import { validateReviewForm } from '../../../../utils';
+import { MAX_RATING, MessageLength, RatingNames } from '../../../../const';
+import {
+  commentPostAction,
+  fetchCurrentOfferCommentsAction
+} from '../../../../store/api-actions';
 
 function FormReview(): JSX.Element {
+
+  const dispatch = useDispatch();
 
   const [rating, setRating] = useState(0);
   const [textReview, setTextReview] = useState('');
 
-  const ratingArray: number[] = new Array(MAX_RATING).fill(null).map((value, index) => index + 1);
+  const ratingArray: number[] = new Array(MAX_RATING).fill(null).map((value, index) => MAX_RATING - index);
+  const { offerId } = useParams<{ offerId: string }>();
 
   const ratingChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
-    evt.preventDefault();
     setRating(parseInt(evt.target.value, 10));
   };
 
@@ -19,8 +26,21 @@ function FormReview(): JSX.Element {
     setTextReview(evt.target.value);
   };
 
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    dispatch(commentPostAction(offerId, {rating, comment: textReview}));
+    dispatch(fetchCurrentOfferCommentsAction(offerId));
+    setRating(0);
+    setTextReview('');
+  };
+
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form
+      className="reviews__form form"
+      action="#"
+      method="post"
+      onSubmit={handleSubmit}
+    >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {
@@ -32,7 +52,7 @@ function FormReview(): JSX.Element {
                 id={value === 1 ? `${value}-star` : `${value}-stars`}
                 type="radio"
                 checked={value === rating}
-                onChange={(evt) => ratingChangeHandler(evt)}
+                onChange={ratingChangeHandler}
               />
               <label
                 htmlFor={value === 1 ? `${value}-star` : `${value}-stars`}
@@ -53,20 +73,24 @@ function FormReview(): JSX.Element {
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={textReview}
-        onChange={(evt) => reviewChangeHandler(evt)}
+        onChange={reviewChangeHandler}
       >
       </textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set{' '}
           <span className="reviews__star">rating</span>
-          and describe your stay with at least{' '}
-          <b className="reviews__text-amount">50 characters</b>.
+          and describe your stay with
+          {textReview.length < MessageLength.Min ? ' at least ': ' up to '}
+          <b className="reviews__text-amount">
+            {textReview.length < MessageLength.Min ? ' 50 ' : ' 300 '}
+            characters
+          </b>.
         </p>
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={textReview.length < REVIEW_MIN_LENGTH || !rating}
+          disabled={!validateReviewForm(textReview, rating)}
         >
           Submit
         </button>
