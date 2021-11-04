@@ -3,22 +3,39 @@ import { loginAction } from '../../../store/api-actions';
 import { AuthData } from '../../../types/auth-data';
 import Header from '../../layout/header/header';
 import { Redirect } from 'react-router';
-import { AppRoute, AuthorizationStatus } from '../../../const';
+import { AppRoute, AuthorizationStatus, CITIES } from '../../../const';
 import { getAuthorizationStatus } from '../../../store/user-data/selectors';
 import { useSelector, useDispatch } from 'react-redux';
+import { getRandomArrayValue, validatePassword } from '../../../utils';
+import { changeCity } from '../../../store/action';
+import CityTab from '../../layout/city-tab/city-tab';
+import { getSelectedCity } from '../../../store/app-state/selectors';
 
 function SignIn(): JSX.Element {
   const authorizationStatus = useSelector(getAuthorizationStatus);
+  const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
+  const selectedCity = useSelector(getSelectedCity);
+
   const dispatch = useDispatch();
   const onFormSubmit = (authData: AuthData) => dispatch(loginAction(authData));
+  const onCityClick = (city: string) => dispatch(changeCity(city));
 
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
+  const handlePasswordChange = (evt: FormEvent<HTMLInputElement>) => {
+    if (passwordRef.current) {
+      passwordRef.current.setCustomValidity(
+        validatePassword(passwordRef.current.value),
+      );
+      passwordRef.current.reportValidity();
+    }
+  };
+
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (loginRef.current !== null && passwordRef.current !== null) {
+    if (loginRef.current && passwordRef.current) {
       onFormSubmit({
         login: loginRef.current.value,
         password: passwordRef.current.value,
@@ -26,7 +43,7 @@ function SignIn(): JSX.Element {
     }
   };
 
-  if (authorizationStatus === AuthorizationStatus.Auth) {
+  if (isAuthorized) {
     return <Redirect to={AppRoute.Main} />;
   }
 
@@ -64,6 +81,7 @@ function SignIn(): JSX.Element {
                   name="password"
                   placeholder="Password"
                   required
+                  onChange={handlePasswordChange}
                 />
               </div>
               <button className="login__submit form__submit button" type="submit">Sign in</button>
@@ -71,9 +89,12 @@ function SignIn(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="/">
-                <span>Amsterdam</span>
-              </a>
+              <CityTab
+                selectedCity={selectedCity}
+                onCityClick={onCityClick}
+                city={getRandomArrayValue(CITIES)}
+                selectedView
+              />
             </div>
           </section>
         </div>

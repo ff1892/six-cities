@@ -1,5 +1,5 @@
-import {MouseEvent} from 'react';
-import {CITIES} from '../../../../const';
+import { CITIES } from '../../../../const';
+import CityTab from '../../../layout/city-tab/city-tab';
 
 type CitiesListProps = {
   selectedCity: string,
@@ -8,11 +8,6 @@ type CitiesListProps = {
 
 function CitiesList({selectedCity, onCityClick}: CitiesListProps): JSX.Element {
 
-  const handleCityClick = (evt: MouseEvent<HTMLElement>) => {
-    evt.preventDefault();
-    onCityClick(evt.currentTarget.innerText);
-  };
-
   return (
     <div className="tabs">
       <section className="locations container">
@@ -20,13 +15,11 @@ function CitiesList({selectedCity, onCityClick}: CitiesListProps): JSX.Element {
           {
             CITIES.map((value) => (
               <li className="locations__item" key={value}>
-                <a
-                  className={`locations__item-link tabs__item ${value === selectedCity ? 'tabs__item--active' : ''}`}
-                  href="/"
-                  onClick={(evt) => handleCityClick(evt)}
-                >
-                  <span>{value}</span>
-                </a>
+                <CityTab
+                  selectedCity={selectedCity}
+                  onCityClick={onCityClick}
+                  city={value}
+                />
               </li>),
             )
           }

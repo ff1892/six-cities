@@ -1,7 +1,18 @@
 import { Offer } from './types/offer';
+import { CommentGet } from './types/comment';
 import { MessageLength } from './const';
 
 const RATING_RER_STAR = 20;
+
+const getRandomInteger = (a: number, b: number): number => {
+  const lower = Math.ceil(Math.min(a, b));
+  const upper = Math.floor(Math.max(a, b));
+  return Math.floor(lower + Math.random() * (upper - lower + 1));
+};
+
+export const getRandomArrayValue = (array: string[]): string => (
+  array[getRandomInteger(0, array.length - 1)]
+);
 
 export const getStarsRatingStyle = (rating: number): string => {
   const ratingInPercent = Math.round(rating) * RATING_RER_STAR;
@@ -32,6 +43,11 @@ export const sortOffers = (sortingType: string, offers: Offer[]): Offer[] => {
       return offers;
   }
 };
+
+export const sortCommentsByDateDown = (comments: CommentGet[]): CommentGet[] => (
+  [...comments].sort(
+    (a, b) => Date.parse(b.date) - Date.parse(a.date))
+);
 
 export const updateOffersList = (offers: Offer[], updatedOffer: Offer): Offer[] => {
   const indexUpdate = offers.findIndex((offer) => offer.id === updatedOffer.id);
@@ -69,10 +85,11 @@ export const validateReviewForm = (text: string, rating: number): boolean => (
 );
 
 export const validatePassword = (password: string): string => {
-  const passReg = /^(?=.*[0-9])(?=.*[a-zA-Z])\w{2,}$/;
-  if (passReg.test(password)) {
+  const passwordReg = /^(?=.*[0-9])(?=.*[a-zA-Z])\w{2,}$/;
+  if (passwordReg.test(password)) {
     return '';
   }
-  return 'Password must contain at least 1 letter and 1 number. No spaces allowed';
-
+  return 'Password must contain at least 1 letter and 1 number.\n No spaces allowed';
 };
+
+

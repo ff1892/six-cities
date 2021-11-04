@@ -13,6 +13,7 @@ import { AppRoute, AuthorizationStatus } from '../../../const';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAuthorizationStatus } from '../../../store/user-data/selectors';
 import { MouseEvent } from 'react';
+import { sortCommentsByDateDown } from '../../../utils';
 
 import {
   fetchCurrentOfferAction,
@@ -45,6 +46,7 @@ function Property(): JSX.Element {
   const isCurrentOfferLoaded = useSelector(getLoadedCurrentOfferStatus);
   const isCurrentOfferError = useSelector(getOfferErrorStatus);
   const currentOfferComments = useSelector(getOfferComments);
+  const sortedOfferComments = sortCommentsByDateDown(currentOfferComments);
   const isCommentsLoaded = useSelector(getLoadedCommentsStatus);
   const nearbyOffers = useSelector(getNearbyOffers);
   const isNearbyOffersLoaded = useSelector(getLoadedNearbyOffersStatus);
@@ -238,7 +240,7 @@ function Property(): JSX.Element {
               </div>
               <section className="property__reviews reviews">
                 <LoadWrapper isLoad={isCommentsLoaded}>
-                  <ReviewsList reviews={currentOfferComments}/>
+                  <ReviewsList reviews={sortedOfferComments}/>
                 </LoadWrapper>
                 {isAuthorized && <FormReview />}
               </section>

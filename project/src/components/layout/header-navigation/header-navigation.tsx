@@ -23,14 +23,16 @@ function HeaderNavigation(): JSX.Element {
         <li className="header__nav-item user">
           <Link to={isAuthorized ? AppRoute.Favorites : AppRoute.SignIn}>
             <a className="header__nav-link header__nav-link--profile" href="/">
-              <div className="header__avatar-wrapper user__avatar-wrapper"
-                style={{
-                  backgroundImage: `url(${userInfo?.avatarUrl})`,
-                  borderRadius: '50%',
-                }}
-              />
-              { isAuthorized
-                ? <span className="header__user-name user__name">{userInfo?.email}</span>
+              { isAuthorized ?
+                <div className="header__avatar-wrapper user__avatar-wrapper"
+                  style={{
+                    backgroundImage: `url(${userInfo?.avatarUrl})`,
+                    borderRadius: '50%',
+                  }}
+                />
+                : <div className="header__avatar-wrapper user__avatar-wrapper"/> }
+              { isAuthorized ?
+                <span className="header__user-name user__name">{userInfo?.email}</span>
                 : <span className="header__login">Sign in</span> }
             </a>
           </Link>
