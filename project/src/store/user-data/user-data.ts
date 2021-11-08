@@ -18,6 +18,7 @@ const userData = createReducer(initialState, (builder) => {
     })
     .addCase(requireLogout, (state) => {
       state.authorizationStatus = AuthorizationStatus.NoAuth;
+      state.userInfo = null;
     });
 });
 

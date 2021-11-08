@@ -46,6 +46,15 @@ export const loadCurrentOfferComments = createAction(
   }),
 );
 
+export const uploadCommentsError = createAction(ActionType.UploadCommentsError);
+
+export const uploadCurrentOfferComment = createAction(
+  ActionType.UploadCurrentOfferComment,
+  (isUploading: boolean) => ({
+    payload: isUploading,
+  }),
+);
+
 export const loadNearbyOffers = createAction(
   ActionType.LoadNearbyOffers,
   (nearbyOffers: Offer[]) => ({
@@ -64,7 +73,7 @@ export const loadFavoriteOffers = createAction(
   }),
 );
 
-export const UpdateOffer = createAction(
+export const updateOffer = createAction(
   ActionType.UpdateOffer,
   (updatedOffer: Offer) => ({
     payload: {

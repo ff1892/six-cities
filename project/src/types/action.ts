@@ -10,6 +10,8 @@ export enum ActionType {
   LoadCurrentOffer = 'data/LoadCurrentOffer',
   LoadCurrentOfferError = 'data/LoadCurrentOfferError',
   LoadCurrentOfferComments = 'data/LoadCurrentOfferComments',
+  UploadCurrentOfferComment = 'data/UploadCurrentOfferComment',
+  UploadCommentsError = 'data/UploadCommentsError',
   LoadNearbyOffers = 'data/LoadNearbyOffers',
   LoadFavoriteOffers = 'data/LoadFavoriteOffers',
   UpdateOffer = 'data/UpdateOffer',

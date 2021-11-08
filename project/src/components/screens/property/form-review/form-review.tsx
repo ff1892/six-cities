@@ -1,19 +1,25 @@
 import { useState, Fragment, ChangeEvent, FormEvent } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
-import { validateReviewForm } from '../../../../utils';
+import { validateReviewForm } from '../../../../utils/common';
 import { MAX_RATING, MessageLength, RatingNames } from '../../../../const';
+import { getUploadedCommentStatus, getCommentUploadedErrorStatus } from '../../../../store/data-comments/selectors';
 import {
-  commentPostAction,
-  fetchCurrentOfferCommentsAction
+  commentPostAction
 } from '../../../../store/api-actions';
 
 function FormReview(): JSX.Element {
 
+  const isUploading = useSelector(getUploadedCommentStatus);
+  const isUploadingError = useSelector(getCommentUploadedErrorStatus);
   const dispatch = useDispatch();
 
   const [rating, setRating] = useState(0);
   const [textReview, setTextReview] = useState('');
+  const clearState = (): void => {
+    setRating(0);
+    setTextReview('');
+  };
 
   const ratingArray: number[] = new Array(MAX_RATING).fill(null).map((value, index) => MAX_RATING - index);
   const { offerId } = useParams<{ offerId: string }>();
@@ -29,9 +35,9 @@ function FormReview(): JSX.Element {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(commentPostAction(offerId, {rating, comment: textReview}));
-    dispatch(fetchCurrentOfferCommentsAction(offerId));
-    setRating(0);
-    setTextReview('');
+    if (!isUploadingError) {
+      clearState();
+    }
   };
 
   return (
@@ -53,6 +59,7 @@ function FormReview(): JSX.Element {
                 type="radio"
                 checked={value === rating}
                 onChange={ratingChangeHandler}
+                disabled={isUploading}
               />
               <label
                 htmlFor={value === 1 ? `${value}-star` : `${value}-stars`}
@@ -74,6 +81,7 @@ function FormReview(): JSX.Element {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={textReview}
         onChange={reviewChangeHandler}
+        disabled={isUploading}
       >
       </textarea>
       <div className="reviews__button-wrapper">
@@ -90,7 +98,7 @@ function FormReview(): JSX.Element {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={!validateReviewForm(textReview, rating)}
+          disabled={!validateReviewForm(textReview, rating) || isUploading}
         >
           Submit
         </button>

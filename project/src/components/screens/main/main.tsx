@@ -6,11 +6,11 @@ import CardsList from '../../layout/cards-list/cards-list';
 import Map from '../../layout/map/map';
 import NoOffersMain from './no-offers-main/no-offers-main';
 import { changeCity, changeSorting } from '../../../store/action';
-import { filterOffersByCity, sortOffers } from '../../../utils';
+import { filterOffersByCity, sortOffers } from '../../../utils/common';
 import { fetchOffersAction } from '../../../store/api-actions';
 import LoadWrapper from '../../layout/loader-wrapper/loader-wrapper';
 import { useSelector, useDispatch } from 'react-redux';
-import { getLoadedOffersStatus, getOffers } from '../../../store/app-data/selectors';
+import { getLoadedOffersStatus, getOffers } from '../../../store/data-offers/selectors';
 import { getCurrentSorting, getSelectedCity } from '../../../store/app-state/selectors';
 
 const CardClasses = {

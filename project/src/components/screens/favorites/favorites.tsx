@@ -2,7 +2,7 @@ import Header from '../../layout/header/header';
 import { useCallback, useEffect } from 'react';
 import CardListFavorite from './card-list-favorite/cardlist-favorite';
 import Footer from '../../layout/footer/footer';
-import { getFavoriteOffers, getLoadedFavoriteOffersStatus } from '../../../store/app-data/selectors';
+import { getFavoriteOffers, getLoadedFavoriteOffersStatus } from '../../../store/data-favorites/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFavoriteOffersAction } from '../../../store/api-actions';
 import NoFavorites from './no-favorites/no-favorites';

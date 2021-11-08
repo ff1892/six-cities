@@ -59,3 +59,7 @@ export enum MessageLength {
   Min = 50,
   Max = 300,
 }
+
+export enum ToastMessages {
+  UploadingError = 'Unable to upload a comment.\n Please, try again.',
+}

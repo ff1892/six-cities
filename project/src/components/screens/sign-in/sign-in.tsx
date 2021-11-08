@@ -6,7 +6,7 @@ import { Redirect } from 'react-router';
 import { AppRoute, AuthorizationStatus, CITIES } from '../../../const';
 import { getAuthorizationStatus } from '../../../store/user-data/selectors';
 import { useSelector, useDispatch } from 'react-redux';
-import { getRandomArrayValue, validatePassword } from '../../../utils';
+import { getRandomArrayValue, validatePassword } from '../../../utils/common';
 import { changeCity } from '../../../store/action';
 import CityTab from '../../layout/city-tab/city-tab';
 import { getSelectedCity } from '../../../store/app-state/selectors';

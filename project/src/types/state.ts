@@ -4,16 +4,30 @@ import { UserInfo } from './user';
 import { RootState } from '../store/root-reducer';
 import { AuthorizationStatus } from '../const';
 
-export type AppData = {
+export type DataOffers = {
   offers: Offer[],
   isOffersLoaded: boolean,
+};
+
+export type DataCurrentOffer = {
   currentOffer: Offer | null,
   isCurrentOfferLoaded: boolean,
   isCurrentOfferError: boolean,
+};
+
+export type DataComments = {
   currentOfferComments: CommentGet[],
   isCommentsLoaded: boolean,
+  isCommentPosting: boolean,
+  isCommentUploadedError: boolean,
+};
+
+export type DataNearby = {
   nearbyOffers: Offer[],
   isNearbyOffersLoaded: boolean,
+};
+
+export type DataFavorites = {
   favoriteOffers: Offer[],
   isFavoriteOffersLoaded: boolean;
 };

@@ -9,7 +9,7 @@ export type City = {
   name: string,
 };
 
-type Host = {
+export type Host = {
   avatarUrl: string,
   id: number,
   isPro: boolean,

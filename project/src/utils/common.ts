@@ -1,10 +1,10 @@
-import { Offer } from './types/offer';
-import { CommentGet } from './types/comment';
-import { MessageLength } from './const';
+import { Offer } from '../types/offer';
+import { CommentGet } from '../types/comment';
+import { MessageLength } from '../const';
 
 const RATING_RER_STAR = 20;
 
-const getRandomInteger = (a: number, b: number): number => {
+export const getRandomInteger = (a: number, b: number): number => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
   return Math.floor(lower + Math.random() * (upper - lower + 1));

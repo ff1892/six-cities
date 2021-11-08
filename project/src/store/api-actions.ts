@@ -10,21 +10,24 @@ import {
   loadCurrentOffer,
   loadCurrentOfferError,
   loadCurrentOfferComments,
+  uploadCurrentOfferComment,
+  uploadCommentsError,
   loadNearbyOffers,
   requireAuthorization,
   loadUserInfo,
   requireLogout,
   loadFavoriteOffers,
-  UpdateOffer
+  updateOffer
 } from './action';
 
 import { ThunkActionResult } from '../types/action';
 import { saveToken, dropToken } from '../services/token';
-import { APIRoute, AuthorizationStatus } from '../const';
+import { APIRoute, AuthorizationStatus, ToastMessages } from '../const';
 import { OfferResponse } from '../types/offer';
 import { CommentGetResponse, CommentPost } from '../types/comment';
 import { AuthData } from '../types/auth-data';
 import { UserInfoResponse } from '../types/user';
+import { toast } from 'react-toastify';
 
 export const fetchOffersAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -59,8 +62,17 @@ export const fetchNearbyOffersAction = (id: string): ThunkActionResult =>
   };
 
 export const commentPostAction = (id: string, { comment, rating }: CommentPost): ThunkActionResult =>
-  async (_dispatch, _getState, api) => {
-    await api.post((`${APIRoute.Comments}/${id}`), { comment, rating });
+  async (dispatch, _getState, api) => {
+    dispatch(uploadCurrentOfferComment(true));
+    try {
+      await api.post((`${APIRoute.Comments}/${id}/'a'`), { comment, rating });
+      dispatch(uploadCurrentOfferComment(false));
+      fetchCurrentOfferCommentsAction(id);
+    } catch {
+      dispatch(uploadCommentsError());
+      toast.info(ToastMessages.UploadingError);
+      dispatch(uploadCurrentOfferComment(false));
+    }
   };
 
 export const checkAuthAction = (): ThunkActionResult =>
@@ -93,7 +105,7 @@ export const switchIsFavoriteAction = (id: number, status: number): ThunkActionR
   async (dispatch, _getState, api) => {
     const { data } = await api.post<OfferResponse>((`${APIRoute.Favorite}/${id}/${status}`));
     const adaptedData = adaptOfferToClient(data);
-    dispatch(UpdateOffer(adaptedData));
+    dispatch(updateOffer(adaptedData));
   };
 
 export const logoutAction = (): ThunkActionResult =>

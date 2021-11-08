@@ -5,7 +5,7 @@ import ReviewsList from './reviews-list/reviews-list';
 import CardsList from '../../layout/cards-list/cards-list';
 import Map from '../../layout/map/map';
 import { useHistory, useParams } from 'react-router';
-import { getStarsRatingStyle } from '../../../utils';
+import { getStarsRatingStyle } from '../../../utils/common';
 import Loader from '../../layout/loader/loader';
 import LoadWrapper from '../../layout/loader-wrapper/loader-wrapper';
 import NotFound from '../not-found/not-found';
@@ -13,7 +13,7 @@ import { AppRoute, AuthorizationStatus } from '../../../const';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAuthorizationStatus } from '../../../store/user-data/selectors';
 import { MouseEvent } from 'react';
-import { sortCommentsByDateDown } from '../../../utils';
+import { sortCommentsByDateDown } from '../../../utils/common';
 
 import {
   fetchCurrentOfferAction,
@@ -24,13 +24,20 @@ import {
 
 import {
   getCurrentOffer,
-  getLoadedCommentsStatus,
   getLoadedCurrentOfferStatus,
-  getLoadedNearbyOffersStatus,
-  getNearbyOffers,
-  getOfferComments,
   getOfferErrorStatus
-} from '../../../store/app-data/selectors';
+} from '../../../store/data-current-offer/selectors';
+
+import {
+  getOfferComments,
+  getLoadedCommentsStatus
+} from '../../../store/data-comments/selectors';
+
+
+import {
+  getNearbyOffers,
+  getLoadedNearbyOffersStatus
+} from '../../../store/data-nearby/selectors';
 
 const MAX_IMAGES_GALLERY = 6;
 
