@@ -1,9 +1,9 @@
 import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../../const';
-import { logoutAction } from '../../../store/api-actions';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAuthorizationStatus, getUserInfo } from '../../../store/user-data/selectors';
+import { AppRoute, AuthorizationStatus } from '../../../const';
+import { logoutAction } from '../../../store/api-actions/user';
+import { getAuthorizationStatus, getUserInfo } from '../../../store/reducers/user-data/selectors';
 
 function HeaderNavigation(): JSX.Element {
   const authorizationStatus = useSelector(getAuthorizationStatus);

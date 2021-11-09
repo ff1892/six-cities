@@ -1,17 +1,17 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { filterOffersByCity, sortOffers } from '../../../utils/common';
+import { changeCity, changeSorting } from '../../../store/actions';
+import { fetchOffersAction } from '../../../store/api-actions/data-offers';
+import { getLoadedOffersStatus, getOffers } from '../../../store/reducers/data-offers/selectors';
+import { getCurrentSorting, getSelectedCity } from '../../../store/reducers/app-state/selectors';
 import Header from '../../layout/header/header';
 import CitiesList from './cities-list/cities-list';
 import SortingForm from './sorting-form/sorting-form';
 import CardsList from '../../layout/cards-list/cards-list';
 import Map from '../../layout/map/map';
 import NoOffersMain from './no-offers-main/no-offers-main';
-import { changeCity, changeSorting } from '../../../store/action';
-import { filterOffersByCity, sortOffers } from '../../../utils/common';
-import { fetchOffersAction } from '../../../store/api-actions';
 import LoadWrapper from '../../layout/loader-wrapper/loader-wrapper';
-import { useSelector, useDispatch } from 'react-redux';
-import { getLoadedOffersStatus, getOffers } from '../../../store/data-offers/selectors';
-import { getCurrentSorting, getSelectedCity } from '../../../store/app-state/selectors';
 
 const CardClasses = {
   listClass: 'cities__places-list places__list tabs__content',

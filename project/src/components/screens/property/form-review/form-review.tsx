@@ -1,17 +1,15 @@
-import { useState, Fragment, ChangeEvent, FormEvent } from 'react';
+import { useState, Fragment, ChangeEvent, FormEvent, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
+import { MAX_RATING, MessageLength, RatingNames, UploadStatus } from '../../../../const';
 import { validateReviewForm } from '../../../../utils/common';
-import { MAX_RATING, MessageLength, RatingNames } from '../../../../const';
-import { getUploadedCommentStatus, getCommentUploadedErrorStatus } from '../../../../store/data-comments/selectors';
-import {
-  commentPostAction
-} from '../../../../store/api-actions';
+import { getUploadedCommentStatus } from '../../../../store/reducers/data-comments/selectors';
+import { fetchCurrentOfferCommentsAction, commentPostAction } from '../../../../store/api-actions/data-comments';
 
 function FormReview(): JSX.Element {
 
-  const isUploading = useSelector(getUploadedCommentStatus);
-  const isUploadingError = useSelector(getCommentUploadedErrorStatus);
+  const uploadingStatus = useSelector(getUploadedCommentStatus);
+  const isUploading = uploadingStatus === UploadStatus.Posting;
   const dispatch = useDispatch();
 
   const [rating, setRating] = useState(0);
@@ -24,21 +22,25 @@ function FormReview(): JSX.Element {
   const ratingArray: number[] = new Array(MAX_RATING).fill(null).map((value, index) => MAX_RATING - index);
   const { offerId } = useParams<{ offerId: string }>();
 
-  const ratingChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setRating(parseInt(evt.target.value, 10));
   };
 
-  const reviewChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleReviewChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
     setTextReview(evt.target.value);
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(commentPostAction(offerId, {rating, comment: textReview}));
-    if (!isUploadingError) {
+    dispatch(fetchCurrentOfferCommentsAction(offerId));
+  };
+
+  useEffect(() => {
+    if (uploadingStatus === UploadStatus.Completed) {
       clearState();
     }
-  };
+  }, [uploadingStatus]);
 
   return (
     <form
@@ -58,7 +60,7 @@ function FormReview(): JSX.Element {
                 id={value === 1 ? `${value}-star` : `${value}-stars`}
                 type="radio"
                 checked={value === rating}
-                onChange={ratingChangeHandler}
+                onChange={handleRatingChange}
                 disabled={isUploading}
               />
               <label
@@ -80,7 +82,7 @@ function FormReview(): JSX.Element {
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={textReview}
-        onChange={reviewChangeHandler}
+        onChange={handleReviewChange}
         disabled={isUploading}
       >
       </textarea>

@@ -1,43 +1,38 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, MouseEvent } from 'react';
+import { useHistory, useParams } from 'react-router';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppRoute, AuthorizationStatus } from '../../../const';
+import { getStarsRatingStyle, sortCommentsByDateDown } from '../../../utils/common';
+import { getAuthorizationStatus } from '../../../store/reducers/user-data/selectors';
+import { fetchCurrentOfferAction } from '../../../store/api-actions/data-current-offer';
+import { fetchNearbyOffersAction } from '../../../store/api-actions/data-nearby';
+import { fetchCurrentOfferCommentsAction } from '../../../store/api-actions/data-comments';
+import { switchIsFavoriteAction } from '../../../store/api-actions/data-favorites';
 import Header from '../../layout/header/header';
 import FormReview from './form-review/form-review';
 import ReviewsList from './reviews-list/reviews-list';
 import CardsList from '../../layout/cards-list/cards-list';
 import Map from '../../layout/map/map';
-import { useHistory, useParams } from 'react-router';
-import { getStarsRatingStyle } from '../../../utils/common';
 import Loader from '../../layout/loader/loader';
 import LoadWrapper from '../../layout/loader-wrapper/loader-wrapper';
 import NotFound from '../not-found/not-found';
-import { AppRoute, AuthorizationStatus } from '../../../const';
-import { useSelector, useDispatch } from 'react-redux';
-import { getAuthorizationStatus } from '../../../store/user-data/selectors';
-import { MouseEvent } from 'react';
-import { sortCommentsByDateDown } from '../../../utils/common';
-
-import {
-  fetchCurrentOfferAction,
-  fetchNearbyOffersAction,
-  fetchCurrentOfferCommentsAction,
-  switchIsFavoriteAction
-} from '../../../store/api-actions';
 
 import {
   getCurrentOffer,
   getLoadedCurrentOfferStatus,
   getOfferErrorStatus
-} from '../../../store/data-current-offer/selectors';
+} from '../../../store/reducers/data-current-offer/selectors';
 
 import {
   getOfferComments,
   getLoadedCommentsStatus
-} from '../../../store/data-comments/selectors';
+} from '../../../store/reducers/data-comments/selectors';
 
 
 import {
   getNearbyOffers,
   getLoadedNearbyOffersStatus
-} from '../../../store/data-nearby/selectors';
+} from '../../../store/reducers/data-nearby/selectors';
 
 const MAX_IMAGES_GALLERY = 6;
 
@@ -253,7 +248,7 @@ function Property(): JSX.Element {
               </section>
             </div>
           </div>
-          <LoadWrapper isLoad={isNearbyOffersLoaded}>
+          { isNearbyOffersLoaded &&
             <section className="property__map map"
               style={{
                 maxWidth: '1200px',
@@ -262,8 +257,7 @@ function Property(): JSX.Element {
               }}
             >
               <Map offers={nearbyOffers} selectedOffer={selectedOffer} mainOffer={currentOffer}/>
-            </section>
-          </LoadWrapper>
+            </section> }
         </section>
         <LoadWrapper isLoad={isNearbyOffersLoaded}>
           <div className="container">

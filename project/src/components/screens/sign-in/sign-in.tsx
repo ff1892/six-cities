@@ -1,20 +1,23 @@
 import { useRef, FormEvent } from 'react';
-import { loginAction } from '../../../store/api-actions';
-import { AuthData } from '../../../types/auth-data';
-import Header from '../../layout/header/header';
 import { Redirect } from 'react-router';
-import { AppRoute, AuthorizationStatus, CITIES } from '../../../const';
-import { getAuthorizationStatus } from '../../../store/user-data/selectors';
 import { useSelector, useDispatch } from 'react-redux';
+import { AuthData } from '../../../types/auth-data';
+import { AppRoute, AuthorizationStatus, City, UploadStatus } from '../../../const';
 import { getRandomArrayValue, validatePassword } from '../../../utils/common';
-import { changeCity } from '../../../store/action';
+import { changeCity } from '../../../store/actions';
+import { getAuthorizationStatus, getUploadUserInfoStatus } from '../../../store/reducers/user-data/selectors';
+import { getSelectedCity } from '../../../store/reducers/app-state/selectors';
+import { loginAction } from '../../../store/api-actions/user';
+import Header from '../../layout/header/header';
 import CityTab from '../../layout/city-tab/city-tab';
-import { getSelectedCity } from '../../../store/app-state/selectors';
 
 function SignIn(): JSX.Element {
   const authorizationStatus = useSelector(getAuthorizationStatus);
-  const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
+  const uploadingStatus = useSelector(getUploadUserInfoStatus);
   const selectedCity = useSelector(getSelectedCity);
+
+  const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
+  const isPosting = uploadingStatus === UploadStatus.Posting;
 
   const dispatch = useDispatch();
   const onFormSubmit = (authData: AuthData) => dispatch(loginAction(authData));
@@ -70,6 +73,7 @@ function SignIn(): JSX.Element {
                   name="email"
                   placeholder="Email"
                   required
+                  disabled={isPosting}
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
@@ -82,9 +86,16 @@ function SignIn(): JSX.Element {
                   placeholder="Password"
                   required
                   onChange={handlePasswordChange}
+                  disabled={isPosting}
                 />
               </div>
-              <button className="login__submit form__submit button" type="submit">Sign in</button>
+              <button
+                className="login__submit form__submit button"
+                type="submit"
+                disabled={isPosting}
+              >
+                Sign in
+              </button>
             </form>
           </section>
           <section className="locations locations--login locations--current">
@@ -92,7 +103,7 @@ function SignIn(): JSX.Element {
               <CityTab
                 selectedCity={selectedCity}
                 onCityClick={onCityClick}
-                city={getRandomArrayValue(CITIES)}
+                city={getRandomArrayValue(Object.values(City))}
                 selectedView
               />
             </div>

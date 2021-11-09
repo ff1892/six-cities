@@ -1,12 +1,12 @@
-import Header from '../../layout/header/header';
 import { useCallback, useEffect } from 'react';
-import CardListFavorite from './card-list-favorite/cardlist-favorite';
-import Footer from '../../layout/footer/footer';
-import { getFavoriteOffers, getLoadedFavoriteOffersStatus } from '../../../store/data-favorites/selectors';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchFavoriteOffersAction } from '../../../store/api-actions';
+import { getFavoriteOffers, getLoadedFavoriteOffersStatus } from '../../../store/reducers/data-favorites/selectors';
+import { fetchFavoriteOffersAction } from '../../../store/api-actions/data-favorites';
+import Header from '../../layout/header/header';
+import CardListFavorite from './card-list-favorite/cardlist-favorite';
 import NoFavorites from './no-favorites/no-favorites';
 import LoadWrapper from '../../layout/loader-wrapper/loader-wrapper';
+import Footer from '../../layout/footer/footer';
 
 
 function Favorites(): JSX.Element {

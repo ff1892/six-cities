@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import HeaderNavigation from '../header-navigation/header-navigation';
 import { AppRoute } from '../../../const';
+import HeaderNavigation from '../header-navigation/header-navigation';
 
 type headerNavigationProps = {
   isHeaderNavigation?: boolean;

@@ -1,9 +1,9 @@
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useRef } from 'react';
-import useMap from '../../../hooks/useMap';
-import { MarkerUrl } from '../../../const';
 import leaflet, { LayerGroup, Icon, Marker, Circle } from 'leaflet';
+import { useEffect, useRef } from 'react';
 import { Offer } from '../../../types/offer';
+import { MarkerUrl } from '../../../const';
+import useMap from '../../../hooks/useMap';
 
 const defaultIcon = new Icon({
   iconUrl: MarkerUrl.Default,

@@ -33,27 +33,23 @@ export const RatingNames: { [key: number]: string } = {
   3: 'not bad',
   4: 'good',
   5: 'perfect',
-};
+} as const;
 
-export const CITIES = [
-  'Paris',
-  'Cologne',
-  'Brussels',
-  'Amsterdam',
-  'Hamburg',
-  'Dusseldorf',
-];
+export const City = {
+  Paris: 'Paris',
+  Cologne: 'Cologne',
+  Brussels: 'Brussels',
+  Amsterdam: 'Amsterdam',
+  Hamburg: 'Hamburg',
+  Dusseldorf: 'Dusseldorf',
+} as const;
 
-export const DEFAULT_CITY = 'Paris';
-
-export const DEFAULT_SORTING = 'Popular';
-
-export const SortingTypes = [
-  'Popular',
-  'Price: low to high',
-  'Price: high to low',
-  'Top rated first',
-];
+export const SortingType = {
+  Popularity: 'Popular',
+  PriceDecrease: 'Price: high to low',
+  PriceIncrease: 'Price: low to high',
+  TopRated: 'Top rated first',
+} as const;
 
 export enum MessageLength {
   Min = 50,
@@ -61,5 +57,16 @@ export enum MessageLength {
 }
 
 export enum ToastMessages {
-  UploadingError = 'Unable to upload a comment.\n Please, try again.',
+  UploadingError = 'Unable to upload a comment. Please, try again.',
+  OffersError = 'Unable to load offers. Please, refresh the page.',
+  NearbyOffersError = 'Unable to load offers nearby.',
+  CommentsError = 'Unable to load reviews.',
+  LoginError = 'Unable to sign in. Please, try again.'
+}
+
+export enum UploadStatus {
+  Unknown = 'UNKNOWN',
+  Posting = 'POSTING',
+  Completed = 'COMPLETED',
+  Error = 'ERROR',
 }

@@ -1,6 +1,6 @@
 import { Offer } from '../types/offer';
 import { CommentGet } from '../types/comment';
-import { MessageLength } from '../const';
+import { MessageLength, SortingType } from '../const';
 
 const RATING_RER_STAR = 20;
 
@@ -33,11 +33,11 @@ export const filterOffersByCity = (offers: Offer[], city: string): Offer[] => (
 
 export const sortOffers = (sortingType: string, offers: Offer[]): Offer[] => {
   switch (sortingType) {
-    case ('Price: low to high'):
+    case (SortingType.PriceIncrease):
       return [...offers].sort((a, b) => a.price - b.price);
-    case ('Price: high to low'):
+    case (SortingType.PriceDecrease):
       return [...offers].sort((a, b) => b.price - a.price);
-    case ('Top rated first'):
+    case (SortingType.TopRated):
       return [...offers].sort((a, b) => b.rating - a.rating);
     default:
       return offers;
@@ -91,5 +91,3 @@ export const validatePassword = (password: string): string => {
   }
   return 'Password must contain at least 1 letter and 1 number.\n No spaces allowed';
 };
-
-

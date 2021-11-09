@@ -1,12 +1,11 @@
 import { MouseEvent } from 'react';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { Offer } from '../../../types/offer';
-import { AppRoute } from '../../../const';
-import { AuthorizationStatus } from '../../../const';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAuthorizationStatus } from '../../../store/user-data/selectors';
-import { switchIsFavoriteAction } from '../../../store/api-actions';
+import { Offer } from '../../../types/offer';
+import { AppRoute, AuthorizationStatus } from '../../../const';
+import { getAuthorizationStatus } from '../../../store/reducers/user-data/selectors';
+import { switchIsFavoriteAction } from '../../../store/api-actions/data-favorites';
 
 type CardProps = {
   offer: Offer,
@@ -67,11 +66,8 @@ function CardMain({ offer, articleClass, wrapperClass, onMouseEnter, onMouseLeav
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
-            className={
-              isFavorite
-                ? 'place-card__bookmark-button place-card__bookmark-button--active button'
-                : 'place-card__bookmark-button button'
-            }
+            className={`place-card__bookmark-button button
+              ${isFavorite ? 'place-card__bookmark-button--active': ''}`}
             type="button"
             onClick={handleOfferFavoritesClick}
           >

@@ -1,6 +1,6 @@
+import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../../const';
-import { MouseEvent } from 'react';
 
 type CityTabProps = {
   selectedView?: boolean;

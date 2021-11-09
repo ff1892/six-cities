@@ -11,12 +11,12 @@ export enum ActionType {
   LoadCurrentOfferError = 'data/LoadCurrentOfferError',
   LoadCurrentOfferComments = 'data/LoadCurrentOfferComments',
   UploadCurrentOfferComment = 'data/UploadCurrentOfferComment',
-  UploadCommentsError = 'data/UploadCommentsError',
   LoadNearbyOffers = 'data/LoadNearbyOffers',
   LoadFavoriteOffers = 'data/LoadFavoriteOffers',
   UpdateOffer = 'data/UpdateOffer',
   RequireAuthorization = 'user/RequireAuthorization',
   LoadUserInfo = 'user/LoadUserInfo',
+  UploadUserInfoStatus = 'user/UploadUserInfoStatus',
   RequireLogout = 'user/requireLogout',
 }
 

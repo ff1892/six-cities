@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SortingTypes } from '../../../../const';
+import { SortingType } from '../../../../const';
 
 type SortingFormProps = {
   currentSorting: string,
@@ -33,7 +33,7 @@ function SortingForm({currentSorting, onSortingChange}: SortingFormProps ): JSX.
       </span>
       <ul className={`places__options places__options--custom ${isActive ? 'places__options--opened' : ''}`}>
         {
-          SortingTypes.map((value) => (
+          Object.values(SortingType).map((value) => (
             <li
               key={value}
               className={`places__option ${currentSorting === value ? 'places__option--active' : ''}`}

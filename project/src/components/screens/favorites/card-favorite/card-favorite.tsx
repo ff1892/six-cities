@@ -1,12 +1,11 @@
-import { Offer } from '../../../../types/offer';
-import { AppRoute } from '../../../../const';
-import { AuthorizationStatus } from '../../../../const';
-import { useSelector, useDispatch } from 'react-redux';
-import { getAuthorizationStatus } from '../../../../store/user-data/selectors';
-import { switchIsFavoriteAction } from '../../../../store/api-actions';
 import { MouseEvent } from 'react';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { Offer } from '../../../../types/offer';
+import { AppRoute, AuthorizationStatus } from '../../../../const';
+import { getAuthorizationStatus } from '../../../../store/reducers/user-data/selectors';
+import { switchIsFavoriteAction } from '../../../../store/api-actions/data-favorites';
 
 type CardProps = {
   offer: Offer,
