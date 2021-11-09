@@ -2,14 +2,14 @@ import { dataComments } from './data-comments';
 import { loadCurrentOfferComments, uploadCurrentOfferComment } from '../../actions';
 import { DataComments } from '../../../types/state';
 import { makeFakeComment } from '../../../utils/mocks';
-import { UploadCommentStatus } from '../../../const';
+import { UploadStatus } from '../../../const';
 import { datatype } from 'faker';
 
 
 const state: DataComments = {
   currentOfferComments: [],
   isCommentsLoaded: false,
-  uploadCommentStatus: UploadCommentStatus.Unknown,
+  uploadCommentStatus: UploadStatus.Unknown,
 };
 
 const comments = [makeFakeComment(), makeFakeComment()];
@@ -26,7 +26,7 @@ describe('Reducer: dataComments', () => {
       .toEqual({
         currentOfferComments: comments,
         isCommentsLoaded: true,
-        uploadCommentStatus: UploadCommentStatus.Unknown,
+        uploadCommentStatus: UploadStatus.Unknown,
       });
   });
 
@@ -34,13 +34,13 @@ describe('Reducer: dataComments', () => {
     const initialState = {
       currentOfferComments: [],
       isCommentsLoaded: false,
-      uploadCommentStatus: UploadCommentStatus.Error,
+      uploadCommentStatus: UploadStatus.Error,
     };
     expect(dataComments(initialState, loadCurrentOfferComments(comments)))
       .toEqual({
         currentOfferComments: comments,
         isCommentsLoaded: true,
-        uploadCommentStatus: UploadCommentStatus.Unknown,
+        uploadCommentStatus: UploadStatus.Unknown,
       });
   });
 
@@ -49,7 +49,7 @@ describe('Reducer: dataComments', () => {
     const initialState = {
       currentOfferComments: comments,
       isCommentsLoaded: true,
-      uploadCommentStatus: UploadCommentStatus.Completed,
+      uploadCommentStatus: UploadStatus.Completed,
     };
     const updatedState = {
       currentOfferComments: comments,
