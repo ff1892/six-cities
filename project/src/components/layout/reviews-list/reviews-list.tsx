@@ -1,4 +1,4 @@
-import { CommentGet } from '../../../../types/comment';
+import { CommentGet } from '../../../types/comment';
 import Review from '../review/review';
 
 const MAX_REVIEWS_COUNT = 10;

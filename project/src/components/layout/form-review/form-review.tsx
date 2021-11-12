@@ -1,10 +1,10 @@
 import { useState, Fragment, ChangeEvent, FormEvent, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
-import { MAX_RATING, MessageLength, RatingNames, UploadStatus } from '../../../../const';
-import { validateReviewForm } from '../../../../utils/common';
-import { getUploadedCommentStatus } from '../../../../store/reducers/data-comments/selectors';
-import { fetchCurrentOfferCommentsAction, commentPostAction } from '../../../../store/api-actions/data-comments';
+import { MAX_RATING, MessageLength, RatingNames, UploadStatus } from '../../../const';
+import { validateReviewForm } from '../../../utils/common';
+import { getUploadedCommentStatus } from '../../../store/reducers/data-comments/selectors';
+import { fetchCurrentOfferCommentsAction, commentPostAction } from '../../../store/api-actions/data-comments';
 
 function FormReview(): JSX.Element {
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SortingType } from '../../../../const';
+import { SortingType } from '../../../const';
 
 type SortingFormProps = {
   currentSorting: string,
@@ -23,7 +23,7 @@ function SortingForm({currentSorting, onSortingChange}: SortingFormProps ): JSX.
       <span className="places__sorting-caption">Sort by {' '}</span>
       <span
         className="places__sorting-type"
-        tabIndex="0"
+        tabIndex={0}
         onClick={() => handleFormHeaderClick()}
       >
         {currentSorting}
@@ -37,7 +37,7 @@ function SortingForm({currentSorting, onSortingChange}: SortingFormProps ): JSX.
             <li
               key={value}
               className={`places__option ${currentSorting === value ? 'places__option--active' : ''}`}
-              tabIndex="0"
+              tabIndex={0}
               onClick={(evt) => handleFormItemClick(value)}
             >
               {value}

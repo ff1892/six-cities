@@ -9,8 +9,8 @@ import { fetchNearbyOffersAction } from '../../../store/api-actions/data-nearby'
 import { fetchCurrentOfferCommentsAction } from '../../../store/api-actions/data-comments';
 import { switchIsFavoriteAction } from '../../../store/api-actions/data-favorites';
 import Header from '../../layout/header/header';
-import FormReview from './form-review/form-review';
-import ReviewsList from './reviews-list/reviews-list';
+import FormReview from '../../layout/form-review/form-review';
+import ReviewsList from '../../layout/reviews-list/reviews-list';
 import CardsList from '../../layout/cards-list/cards-list';
 import Map from '../../layout/map/map';
 import Loader from '../../layout/loader/loader';

@@ -1,5 +1,5 @@
-import { City } from '../../../../const';
-import CityTab from '../../../layout/city-tab/city-tab';
+import { City } from '../../../const';
+import CityTab from '../city-tab/city-tab';
 
 type CitiesListProps = {
   selectedCity: string,
