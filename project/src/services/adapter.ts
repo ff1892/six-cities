@@ -42,7 +42,7 @@ export const adaptOffersGroupToClient = (offers: OfferResponse[]): Offer[] => (
   offers.map(adaptOfferToClient)
 );
 
-const adaptCommentToClient = (comment: CommentGetResponse): CommentGet => ({
+export const adaptCommentToClient = (comment: CommentGetResponse): CommentGet => ({
   comment: comment.comment,
   date: comment.date,
   id: comment.id,
@@ -56,7 +56,7 @@ const adaptCommentToClient = (comment: CommentGetResponse): CommentGet => ({
   },
 });
 
-export const adaptCommentsGorupToClient = (comments: CommentGetResponse[]): CommentGet[] => (
+export const adaptCommentsGroupToClient = (comments: CommentGetResponse[]): CommentGet[] => (
   comments.map(adaptCommentToClient)
 );
 

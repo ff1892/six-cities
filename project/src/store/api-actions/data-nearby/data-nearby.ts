@@ -1,8 +1,8 @@
-import { adaptOffersGroupToClient } from '../../services/adapter';
-import { loadNearbyOffers } from '../actions';
-import { APIRoute, ToastMessages} from '../../const';
-import { ThunkActionResult } from '../../types/action';
-import { OfferResponse } from '../../types/offer';
+import { adaptOffersGroupToClient } from '../../../services/adapter';
+import { loadNearbyOffers } from '../../actions';
+import { APIRoute, ToastMessages} from '../../../const';
+import { ThunkActionResult } from '../../../types/action';
+import { OfferResponse } from '../../../types/offer';
 import { toast } from 'react-toastify';
 
 export const fetchNearbyOffersAction = (id: string): ThunkActionResult =>

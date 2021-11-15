@@ -6,15 +6,13 @@ import { AppRoute, AuthorizationStatus, City, UploadStatus } from '../../../cons
 import { getRandomArrayValue, validatePassword } from '../../../utils/common';
 import { changeCity } from '../../../store/actions';
 import { getAuthorizationStatus, getUploadUserInfoStatus } from '../../../store/reducers/user-data/selectors';
-import { getSelectedCity } from '../../../store/reducers/app-state/selectors';
-import { loginAction } from '../../../store/api-actions/user';
+import { loginAction } from '../../../store/api-actions/user/user';
 import Header from '../../layout/header/header';
 import CityTab from '../../layout/city-tab/city-tab';
 
 function SignIn(): JSX.Element {
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const uploadingStatus = useSelector(getUploadUserInfoStatus);
-  const selectedCity = useSelector(getSelectedCity);
 
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
   const isPosting = uploadingStatus === UploadStatus.Posting;
@@ -74,6 +72,7 @@ function SignIn(): JSX.Element {
                   placeholder="Email"
                   required
                   disabled={isPosting}
+                  data-testid="login"
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
@@ -87,6 +86,7 @@ function SignIn(): JSX.Element {
                   required
                   onChange={handlePasswordChange}
                   disabled={isPosting}
+                  data-testid="password"
                 />
               </div>
               <button
@@ -101,7 +101,6 @@ function SignIn(): JSX.Element {
           <section className="locations locations--login locations--current">
             <div className="locations__item">
               <CityTab
-                selectedCity={selectedCity}
                 onCityClick={onCityClick}
                 city={getRandomArrayValue(Object.values(City))}
                 selectedView

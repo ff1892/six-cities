@@ -3,7 +3,7 @@ import leaflet, { LayerGroup, Icon, Marker, Circle } from 'leaflet';
 import { useEffect, useRef } from 'react';
 import { Offer } from '../../../types/offer';
 import { MarkerUrl } from '../../../const';
-import useMap from '../../../hooks/useMap';
+import useMap from '../../../hooks/use-map';
 
 const defaultIcon = new Icon({
   iconUrl: MarkerUrl.Default,
@@ -101,6 +101,7 @@ function Map({offers, selectedOffer, mainOffer}: MapProps): JSX.Element {
 
   return (
     <div
+      data-testid="map component"
       style={{
         height: '100%',
       }}

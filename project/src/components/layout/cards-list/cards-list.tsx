@@ -1,7 +1,7 @@
 import { MouseEvent } from 'react';
 import { Offer } from '../../../types/offer';
 import { Cards } from '../../../types/cards';
-import CardMain from '../card/card';
+import CardMain from '../card-main/card-main';
 
 type CardsListProps = {
   offers: Offer[],

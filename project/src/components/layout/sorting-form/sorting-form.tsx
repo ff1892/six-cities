@@ -25,13 +25,17 @@ function SortingForm({currentSorting, onSortingChange}: SortingFormProps ): JSX.
         className="places__sorting-type"
         tabIndex={0}
         onClick={() => handleFormHeaderClick()}
+        data-testid="form-header"
       >
         {currentSorting}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      <ul className={`places__options places__options--custom ${isActive ? 'places__options--opened' : ''}`}>
+      <ul
+        className={`places__options places__options--custom ${isActive ? 'places__options--opened' : ''}`}
+        data-testid="form-items"
+      >
         {
           Object.values(SortingType).map((value) => (
             <li

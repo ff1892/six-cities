@@ -2,18 +2,18 @@ import {
   APIRoute,
   ToastMessages,
   UploadStatus
-} from '../../const';
-import { adaptCommentsGorupToClient} from '../../services/adapter';
-import { loadCurrentOfferComments, uploadCurrentOfferComment } from '../actions';
-import { ThunkActionResult } from '../../types/action';
-import { CommentGetResponse, CommentPost } from '../../types/comment';
+} from '../../../const';
+import { adaptCommentsGroupToClient} from '../../../services/adapter';
+import { loadCurrentOfferComments, uploadCurrentOfferComment } from '../../actions';
+import { ThunkActionResult } from '../../../types/action';
+import { CommentGetResponse, CommentPost } from '../../../types/comment';
 import { toast } from 'react-toastify';
 
 export const fetchCurrentOfferCommentsAction = (id: string): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
       const { data } = await api.get<CommentGetResponse[]>(`${APIRoute.Comments}/${id}`);
-      const adaptedData = adaptCommentsGorupToClient(data);
+      const adaptedData = adaptCommentsGroupToClient(data);
       dispatch(loadCurrentOfferComments(adaptedData));
     } catch {
       toast(ToastMessages.CommentsError);

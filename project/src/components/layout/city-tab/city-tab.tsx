@@ -4,9 +4,9 @@ import { AppRoute } from '../../../const';
 
 type CityTabProps = {
   selectedView?: boolean;
-  city: string;
-  selectedCity: string;
   onCityClick: (city: string) => void;
+  city: string;
+  selectedCity?: string;
 };
 
 function CityTab ({selectedView=false, city, selectedCity, onCityClick}: CityTabProps): JSX.Element {

@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { filterOffersByCity, sortOffers } from '../../../utils/common';
 import { changeCity, changeSorting } from '../../../store/actions';
-import { fetchOffersAction } from '../../../store/api-actions/data-offers';
+import { fetchOffersAction } from '../../../store/api-actions/data-offers/data-offers';
 import { getLoadedOffersStatus, getOffers } from '../../../store/reducers/data-offers/selectors';
 import { getCurrentSorting, getSelectedCity } from '../../../store/reducers/app-state/selectors';
 import Header from '../../layout/header/header';
@@ -48,7 +48,10 @@ function MainScreen(): JSX.Element {
 
   return (
     <LoadWrapper isLoad={isOffersLoaded}>
-      <div className="page page--gray page--main">
+      <div
+        className="page page--gray page--main"
+        data-testid="root page"
+      >
         <Header />
 
         <main className={`page__main page__main--index ${hasOffers ? '' : 'page__main--index-empty'}`}>

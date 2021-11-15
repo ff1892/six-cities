@@ -1,10 +1,10 @@
-import { adaptAuthInfoToClient } from '../../services/adapter';
-import { requireAuthorization, switchUploadUserInfoStatus, loadUserInfo, requireLogout } from '../actions';
-import { APIRoute, AuthorizationStatus, ToastMessages, UploadStatus } from '../../const';
-import { ThunkActionResult } from '../../types/action';
-import { saveToken, dropToken } from '../../services/token';
-import { AuthData } from '../../types/auth-data';
-import { UserInfoResponse } from '../../types/user';
+import { adaptAuthInfoToClient } from '../../../services/adapter';
+import { requireAuthorization, switchUploadUserInfoStatus, loadUserInfo, requireLogout } from '../../actions';
+import { APIRoute, AuthorizationStatus, ToastMessages, UploadStatus } from '../../../const';
+import { ThunkActionResult } from '../../../types/action';
+import { saveToken, dropToken } from '../../../services/token';
+import { AuthData } from '../../../types/auth-data';
+import { UserInfoResponse } from '../../../types/user';
 import { toast } from 'react-toastify';
 
 export const checkAuthAction = (): ThunkActionResult =>

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Offer } from '../../../types/offer';
 import { AppRoute, AuthorizationStatus } from '../../../const';
 import { getAuthorizationStatus } from '../../../store/reducers/user-data/selectors';
-import { switchIsFavoriteAction } from '../../../store/api-actions/data-favorites';
+import { switchIsFavoriteAction } from '../../../store/api-actions/data-favorites/data-favorites';
 
 type CardProps = {
   offer: Offer,
@@ -47,6 +47,7 @@ function CardMain({ offer, articleClass, wrapperClass, onMouseEnter, onMouseLeav
       className={`${articleClass} place-card`}
       onMouseEnter={(evt) => onMouseEnter(evt, id)}
       onMouseLeave={(evt) => onMouseLeave(evt)}
+      data-testid="offer-card"
     >
       {
         isPremium &&

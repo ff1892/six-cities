@@ -1,8 +1,8 @@
-import { adaptOfferToClient, adaptOffersGroupToClient } from '../../services/adapter';
-import { loadFavoriteOffers, updateOffer } from '../actions';
-import { APIRoute } from '../../const';
-import { ThunkActionResult } from '../../types/action';
-import { OfferResponse } from '../../types/offer';
+import { adaptOfferToClient, adaptOffersGroupToClient } from '../../../services/adapter';
+import { loadFavoriteOffers, updateOffer } from '../../actions';
+import { APIRoute } from '../../../const';
+import { ThunkActionResult } from '../../../types/action';
+import { OfferResponse } from '../../../types/offer';
 
 export const fetchFavoriteOffersAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {

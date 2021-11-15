@@ -1,8 +1,8 @@
-import { adaptOfferToClient } from '../../services/adapter';
-import { loadCurrentOffer, loadCurrentOfferError } from '../actions';
-import { APIRoute } from '../../const';
-import { ThunkActionResult } from '../../types/action';
-import { OfferResponse } from '../../types/offer';
+import { adaptOfferToClient } from '../../../services/adapter';
+import { loadCurrentOffer, loadCurrentOfferError } from '../../actions';
+import { APIRoute } from '../../../const';
+import { ThunkActionResult } from '../../../types/action';
+import { OfferResponse } from '../../../types/offer';
 
 
 export const fetchCurrentOfferAction = (id: string): ThunkActionResult =>

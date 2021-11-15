@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 import { MAX_RATING, MessageLength, RatingNames, UploadStatus } from '../../../const';
 import { validateReviewForm } from '../../../utils/common';
 import { getUploadedCommentStatus } from '../../../store/reducers/data-comments/selectors';
-import { fetchCurrentOfferCommentsAction, commentPostAction } from '../../../store/api-actions/data-comments';
+import { fetchCurrentOfferCommentsAction, commentPostAction } from '../../../store/api-actions/data-comments/data-comments';
 
 function FormReview(): JSX.Element {
 
@@ -48,6 +48,7 @@ function FormReview(): JSX.Element {
       action="#"
       method="post"
       onSubmit={handleSubmit}
+      data-testid="form review"
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">

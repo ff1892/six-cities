@@ -16,6 +16,13 @@ export type Host = {
   name: string,
 };
 
+export type HostResponse = {
+  'avatar_url': string,
+  id: number,
+  'is_pro': boolean,
+  name: string,
+};
+
 export type Offer = {
   id: number,
   bedrooms: number,

@@ -4,10 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppRoute, AuthorizationStatus } from '../../../const';
 import { getStarsRatingStyle, sortCommentsByDateDown } from '../../../utils/common';
 import { getAuthorizationStatus } from '../../../store/reducers/user-data/selectors';
-import { fetchCurrentOfferAction } from '../../../store/api-actions/data-current-offer';
-import { fetchNearbyOffersAction } from '../../../store/api-actions/data-nearby';
-import { fetchCurrentOfferCommentsAction } from '../../../store/api-actions/data-comments';
-import { switchIsFavoriteAction } from '../../../store/api-actions/data-favorites';
+import { fetchCurrentOfferAction } from '../../../store/api-actions/data-current-offer/data-current-offer';
+import { fetchNearbyOffersAction } from '../../../store/api-actions/data-nearby/data-nearby';
+import { fetchCurrentOfferCommentsAction } from '../../../store/api-actions/data-comments/data-comments';
+import { switchIsFavoriteAction } from '../../../store/api-actions/data-favorites/data-favorites';
 import Header from '../../layout/header/header';
 import FormReview from '../../layout/form-review/form-review';
 import ReviewsList from '../../layout/reviews-list/reviews-list';
@@ -131,7 +131,10 @@ function Property(): JSX.Element {
   return (
     <div className="page">
       <Header />
-      <main className="page__main page__main--property">
+      <main
+        className="page__main page__main--property"
+        data-testid="property page"
+      >
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
@@ -167,6 +170,7 @@ function Property(): JSX.Element {
                   }
                   type="button"
                   onClick={handleOfferFavoritesClick}
+                  data-testid="favorites button"
                 >
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
