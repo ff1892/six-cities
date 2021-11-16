@@ -19,7 +19,7 @@ const CardClasses = {
   wrapperClass: 'cities__image-wrapper',
 };
 
-function MainScreen(): JSX.Element {
+function Main(): JSX.Element {
 
   const offers = useSelector(getOffers);
   const selectedCity = useSelector(getSelectedCity);
@@ -84,4 +84,4 @@ function MainScreen(): JSX.Element {
   );
 }
 
-export default MainScreen;
+export default Main;

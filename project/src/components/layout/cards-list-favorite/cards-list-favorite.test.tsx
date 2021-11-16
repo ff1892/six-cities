@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { AuthorizationStatus, City } from '../../../const';
 import { makeFakeOffer } from '../../../utils/mocks';
-import CardsListFavorite from './cardslist-favorite';
+import CardsListFavorite from './cards-list-favorite';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();

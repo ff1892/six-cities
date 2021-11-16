@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getFavoriteOffers, getLoadedFavoriteOffersStatus } from '../../../store/reducers/data-favorites/selectors';
 import { fetchFavoriteOffersAction } from '../../../store/api-actions/data-favorites/data-favorites';
 import Header from '../../layout/header/header';
-import CardListFavorite from '../../layout/card-list-favorite/cardslist-favorite';
+import CardListFavorite from '../../layout/cards-list-favorite/cards-list-favorite';
 import NoFavorites from './no-favorites/no-favorites';
 import LoadWrapper from '../../layout/loader-wrapper/loader-wrapper';
 import Footer from '../../layout/footer/footer';
