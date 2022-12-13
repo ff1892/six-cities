@@ -39,7 +39,8 @@ Six cities &mdash; сервис для путешественников, пом�
 3. React Router  
 4. Redux (RTK, redux-thunk, action-creator pattern)  
 5. Jest, RTL (тестирование)  
-6. Leaflet (карта)  
+6. Leaflet (карта)
+7. Axios (запросы к серверу)
 
 ## 📦 Скрипты
 
